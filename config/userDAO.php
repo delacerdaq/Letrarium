@@ -19,5 +19,18 @@ class UserDAO {
         $stmt->bindValue(':terms', $terms, PDO::PARAM_BOOL);
         $stmt->execute();
     }
+
+    public function validateUser($username, $password) {
+        $sql = "SELECT * FROM users WHERE username = :username";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':username', $username);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && password_verify($password, $user['password'])) {
+            return $user;
+        }
+        return false;
+    }
 }
 ?>
