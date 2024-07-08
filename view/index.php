@@ -1,3 +1,25 @@
+<?php
+require_once '../model/user.php';
+require_once '../config/userDAO.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $username = $_POST['username'];
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $terms = isset($_POST['terms']) ? 1 : 0;
+
+    $user = new User($username, $name, $email, $password, $terms);
+    $userDAO = new UserDAO();
+
+    $userDAO->register($user->getUsername(), $user->getName(), $user->getEmail(), $user->getPassword(), $user->getTerms());
+
+    /*
+    echo "User registered successfully!";
+    */
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -97,31 +119,31 @@
     </div>
 
     <div class="wrapper">
-        <form action="">
+        <form action="index.php" method="POST">
             <a href="#"><i class='bx bx-arrow-back'></i></a>
             <h1>Cadastro</h1>
             <div class="input-box">
-                <input type="text" placeholder="Nome de usuário" required>
+                <input type="text" name="username" placeholder="Nome de usuário" required>
                 <i class='bx bxs-user'></i>
             </div>
 
             <div class="input-box">
-                <input type="text" placeholder="Nome" required>
+                <input type="text" name="name" placeholder="Nome" required>
                 <i class='bx bx-user'></i>
             </div>
-            
+
             <div class="input-box">
-                <input type="password" placeholder="Senha" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <i class='bx bxs-envelope'></i>
+            </div>
+
+            <div class="input-box">
+                <input type="password" name="password" placeholder="Senha" required>
                 <i class='bx bxs-lock-alt'></i>
             </div>
 
-            <div class="input-box">
-                <input type="password" placeholder="Confirmar senha" required>
-                <i class='bx bx-lock-alt'></i>
-            </div>
-
             <div class="remember-forgot">
-                <label><input type="checkbox">Eu concordo com os <a href="">Termos & Condições</a></label>
+                <label><input type="checkbox" name="terms">Eu concordo com os <a href="">Termos & Condições</a></label>
             </div>
 
             <button type="submit" class="btn">Cadastrar</button>
@@ -132,7 +154,7 @@
             </button>
             
             <div class="register-link">
-                <p>Já possui conta? <a href="#">Faça Login</a></p>
+                <p>Já possui uma conta? <a href="#">Login</a></p>
             </div>
         </form>
     </div>
