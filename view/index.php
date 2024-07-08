@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <a href="">Home</a>
                 <a href="">Explorar</a>
                 <a id="cadastrar" href="">Cadastrar</a>
-                <a id="logar" href="">Login</a>
+                <a id="logar" href="../view/login.php">Login</a>
             </div>
 
         </nav>
