@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body, html {
+    height: 100%;
+    font-family: "Josefin Sans", sans-serif;
+}
+#header {
+    height: 8vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    padding: 0 3%; 
+    background-color: #574796; 
+}
+nav {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center; 
+    padding: 0 1.5rem; 
+}
+.links {
+    display: flex;
+    gap: 20px;
+}
+.links a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 15px;
+    transition: background-color 0.3s;
+}
+
+@media (max-width: 768px) {
+    #search input {
+        width: 70%;
+    }
+}
+
+@media (max-width: 480px) {
+    #search input {
+        width: 90%;
+    }
+}
+
+#welcome {
+    height: 5vh; 
+    display: flex;
+    align-items: center; 
+    justify-content: space-around; 
+    padding: 15px 0;
+    background-color: #B8AFDF; 
+    color: #574796;
+}
+#categories{
+    text-decoration: none;
+    padding: 5px 40px 5px 40px;
+    background-color: #fff;
+    color: #574796;
+    border-radius: 20px;
+}
+#welcome-section {
+    margin-top: 3%;
+    text-align: center;
+}
+.search-results,
+#poems-section ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.search-results h2,
+#poems-section h2 {
+    width: 100%;
+    text-align: center;
+    background-color: #FFFDD0; /* Cor de fundo creme */
+    padding: 20px;
+    border-radius: 10px;
+}
+.search-results .poem,
+#poems-section li {
+    background-color: #FFFDD0; /* Cor de fundo creme */
+    margin: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.search-results .poem h3,
+#poems-section li h3 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+.search-results .poem p,
+#poems-section li p {
+    text-align: justify;
+}
+#poems-section li small {
+    text-align: center;
+    display: block;
+    margin-top: 10px;
+}
+form label{
+    color: #fff;
+}
+#no-poem-result{
+    margin-top: 5%;
+    text-align: center;
+}
+
