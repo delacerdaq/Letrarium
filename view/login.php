@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <h1>Login</h1>
             <?php
             if (isset($error_message)) {
-                echo "<p style='color: red;'>$error_message</p>";
+                echo "<p style='color: red; text-align: center; margin-top: 20px;'>$error_message</p>";
             }
             ?>
             <div class="input-box">
