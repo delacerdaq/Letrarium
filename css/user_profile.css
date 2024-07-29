@@ -20,7 +20,6 @@ body, html {
     border-radius: 50%;
     background-color: #f0f0f0;
     line-height: 150px;
-    overflow: hidden;
 }
 #profile-picture img {
     width: 100%;
