@@ -1,98 +1,132 @@
 <?php
-require_once '../config/database.php';
 require_once '../model/Poem.php';
+require_once '../model/Tag.php';
+require_once '../config/database.php';
 
 class PoemController {
+
+    private $poem;
+
+    public function __construct() {
+        $db = new Database();
+        $this->poem = new Poem($db->getConnection());
+    }
+
+    // Método para validar o poema, esperando um objeto Poem.
     public function validatePoem(Poem $poem) {
-        if (empty($poem->getTitle()) || empty($poem->getContent())) {
-            return "Título e conteúdo não podem estar vazios.";
+        // Validações de exemplo
+        if (empty($poem->getTitle())) {
+            return "O título não pode ser vazio.";
         }
-        if (!in_array($poem->getVisibility(), ['public', 'restricted'])) {
-            return "Visibilidade inválida.";
+        if (empty($poem->getContent())) {
+            return "O conteúdo não pode ser vazio.";
         }
-        return true;
+        // Outras validações podem ser adicionadas aqui
+        return true; // Se passar todas as validações
     }
 
-    public function savePoem(Poem $poem) {
-        $database = new Database();
-        $conn = $database->getConnection();
+    // Método para salvar o poema, aceitando um objeto Poem diretamente.
+    public function savePoem($title, $content, $visibility, $authorId, $categoryId, $tags) {
+        $poem = new Poem($title, $content, $visibility, $authorId, $categoryId);
+        $validationResult = $this->validatePoem($poem);
 
-        $sql = "INSERT INTO poems (title, content, visibility, author_id, category_id) VALUES (:title, :content, :visibility, :author_id, :category_id)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindValue(':title', $poem->getTitle());
-        $stmt->bindValue(':content', $poem->getContent());
-        $stmt->bindValue(':visibility', $poem->getVisibility());
-        $stmt->bindValue(':author_id', $poem->getAuthorId());
-        $stmt->bindValue(':category_id', $poem->getCategoryId());
-        return $stmt->execute();
+        if ($validationResult !== true) {
+            return $validationResult;
+        }
+
+        // Salva o poema e retorna seu ID
+        if ($poem->save()) {
+            $poemId = $poem->getId(); // Supondo que o método getId() retorne o ID do poema salvo
+            $tagModel = new Tag();
+
+            // Adiciona cada tag ao poema
+            foreach (explode(',', $tags) as $tag) {
+                $tagModel->addTag($poemId, trim($tag));
+            }
+
+            return "Poema salvo com sucesso.";
+        } else {
+            return "Erro ao salvar o poema.";
+        }
     }
 
-    public function getAllPoems() {
-        $database = new Database();
-        $conn = $database->getConnection();
+    public function editPoem($poemId, $data) {
+        if ($this->poem->getById($poemId)) {
+            $title = $data['title'];
+            $content = $data['content'];
+            $categoryId = $data['category_id'];
+            $visibility = $data['visibility'];
     
-        $sql = "SELECT poems.*, categories.name as category_name, users.username, profile.profile_picture
-                FROM poems
-                JOIN categories ON poems.category_id = categories.id
-                JOIN users ON poems.author_id = users.id
-                LEFT JOIN profile ON users.id = profile.user_id
-                WHERE visibility = 'public'";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
+            // Verifica e manipula as tags
+            $tags = isset($data['tags']) ? $data['tags'] : [];
+            if (is_array($tags)) {
+                // Se já é um array, apenas trim e re-converta para string
+                $tagsString = implode(',', array_map('trim', $tags));
+            } else {
+                // Caso contrário, assume que é uma string
+                $tagsString = $tags;
+            }
+            // Divide as tags em um array, garantindo que esteja no formato correto
+            $tagsArray = array_map('trim', explode(',', $tagsString));
     
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            // Edita o poema através do controlador
+            if ($this->poem->editPoem($poemId, $title, $content, $categoryId, $visibility)) {
+                $tagModel = new Tag();
+                $tagModel->editTags($poemId, $tagsArray); // Passa o array de tags para o método editTags
+                return "Poema editado com sucesso!";
+            } else {
+                return "Erro ao editar o poema.";
+            }
+        } else {
+            return "Poema não encontrado.";
+        }
     }    
 
+    // Método para excluir um poema
+    public function deletePoem($poemId, $authorId) {
+        return $this->poem->deletePoem($poemId, $authorId);
+    }
+    
+    public function getAllPoems() {
+        return Poem::getAll();
+    }
+
     public function getPoemsByCategory($categoryId) {
-        $database = new Database();
-        $conn = $database->getConnection();
-
-        $sql = "SELECT poems.*, categories.name as category_name FROM poems
-                JOIN categories ON poems.category_id = categories.id
-                WHERE category_id = :category_id AND visibility = 'public'";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindValue(':category_id', $categoryId);
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return Poem::getByCategory($categoryId);
     }
 
     public function getPoemsByUser($userId) {
-        $database = new Database();
-        $conn = $database->getConnection();
+        return Poem::getByUser($userId);
+    }
 
-        $sql = "SELECT poems.*, categories.name as category_name FROM poems
-                JOIN categories ON poems.category_id = categories.id
-                WHERE author_id = :author_id";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindValue(':author_id', $userId);
-        $stmt->execute();
+    public function getAllPoemsWithTagsAndProfilePictures() {
+        return Poem::getAllPoemsWithTagsAndProfilePictures();
+    }
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    /*
+    public function getCategories() {
+        return Poem::getCategories();
+    }
+    */
+
+    public function searchPoems($keyword) {
+        return Poem::search($keyword);
+    }
+
+    public function getPoemById($poemId) {
+        $poem = $this->poem->getById($poemId);
+        
+        if ($poem) {
+            $tagModel = new Tag();
+            $tags = $tagModel->getTags($poemId);
+            $poem['tags'] = array_column($tags, 'name'); // Agora isso deve funcionar corretamente
+        }
+        
+        return $poem;
     }
 
     public function getCategories() {
-        $database = new Database();
-        $conn = $database->getConnection();
-
-        $sql = "SELECT * FROM categories";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    // Método para buscar poemas por palavra-chave
-    public function searchPoems($keyword) {
-        $database = new Database();
-        $conn = $database->getConnection();
-
-        $sql = "SELECT * FROM poems WHERE title LIKE :keyword OR content LIKE :keyword";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindValue(':keyword', '%' . $keyword . '%');
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->poem->getCategories();
     }
 }
 ?>
