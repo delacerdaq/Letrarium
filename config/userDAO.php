@@ -12,18 +12,24 @@ class UserDAO {
     }
 
     public function register($username, $name, $email, $password, $terms) {
-        $sql = "INSERT INTO users (username, name, email, password, terms) VALUES (:username, :name, :email, :password, :terms)";
+        $sql = "INSERT INTO " . $this->table . "(username, name, email, password, terms) VALUES (:username, :name, :email, :password, :terms)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':username', $username);
         $stmt->bindValue(':name', $name);
         $stmt->bindValue(':email', $email);
         $stmt->bindValue(':password', password_hash($password, PASSWORD_DEFAULT));
         $stmt->bindValue(':terms', $terms, PDO::PARAM_BOOL);
-        $stmt->execute();
+        
+        try{
+            return $stmt->execute();
+        } 
+        catch (PDOException $e) {
+            return false; 
+        }
     }
 
     public function validateUser($username, $password) {
-        $sql = "SELECT * FROM users WHERE username = :username";
+        $sql = "SELECT * FROM " . $this->table . " WHERE username = :username";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':username', $username);
         $stmt->execute();
