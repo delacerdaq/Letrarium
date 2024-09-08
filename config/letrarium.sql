@@ -10,6 +10,7 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     terms BOOLEAN NOT NULL DEFAULT 0
 );
+select * from users;
 
 CREATE TABLE poems (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -20,6 +21,7 @@ CREATE TABLE poems (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (author_id) REFERENCES users(id)
 );
+select * from poems;
 
 CREATE TABLE categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -57,6 +59,40 @@ CREATE TABLE password_resets (
     expires_at DATETIME NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+CREATE TABLE tags (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL
+);
+
+select * from tags;
+select * from poem_tags;
+
+CREATE TABLE poem_tags (
+    poem_id INT,
+    tag_id INT,
+    PRIMARY KEY (poem_id, tag_id),
+    FOREIGN KEY (poem_id) REFERENCES poems(id) ON DELETE CASCADE,
+    FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
+);
+
+ALTER TABLE poem_tags
+ADD CONSTRAINT fk_poem_id
+FOREIGN KEY (poem_id) REFERENCES poems(id) ON DELETE CASCADE;
+
+SELECT * FROM information_schema.KEY_COLUMN_USAGE
+WHERE TABLE_NAME = 'poem_tags' AND CONSTRAINT_SCHEMA = 'letrarium';
+
+SELECT @@foreign_key_checks;
+
+ALTER TABLE poem_tags
+DROP PRIMARY KEY,
+ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY FIRST,
+ADD CONSTRAINT fk_poem_id
+FOREIGN KEY (poem_id) REFERENCES poems(id) ON DELETE CASCADE,
+ADD CONSTRAINT fk_tag_id
+FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE;
+
+
 
 
 
