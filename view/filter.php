@@ -75,7 +75,7 @@ $categories = $poemController->getCategories();
                 <?php foreach ($poems as $poem): ?>
                     <li>
                         <h3><?php echo htmlspecialchars($poem['title']); ?></h3>
-                        <p><?php echo nl2br(htmlspecialchars($poem['content'])); ?></p>
+                        <p style="text-align: center;"><?php echo nl2br(htmlspecialchars($poem['content'])); ?></p>
                         <small>Categoria: <?php echo htmlspecialchars($poem['category_name']); ?></small>
                     </li>
                 <?php endforeach; ?>
