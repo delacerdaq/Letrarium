@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+
+/* Estilização geral para os formulários */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #8A63EB; /* Fundo do formulário (opcional, escolha a cor que preferir) */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilização dos botões */
+form button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #8F7BDF;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px 0;
+    font-family: "Josefin Sans", sans-serif;
+}
+
+form button:hover {
+    background-color: #7B1FA2; 
+}
+
+/* Estilização dos links */
+form a {
+    color: #7B1FA2; 
+    text-decoration: none;
+}
+
+form a:hover {
+    text-decoration: underline;
+}
+
+/* Centralização do formulário na página */
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: "Josefin Sans", sans-serif;
+    background-color: #E7E7E7; /* Cor de fundo da página (opcional) */
+    color: #fff;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+}
