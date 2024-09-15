@@ -1,6 +1,5 @@
 <?php
 session_start();
-require_once '../model/Poem.php';
 require_once '../controller/PoemController.php';
 
 if (!isset($_SESSION['user_id'])) {
@@ -22,7 +21,7 @@ if (!empty($keyword)) {
     $poems = $poemController->searchPoems($keyword);
 } else {
     // Busca todos os poemas quando não há pesquisa
-    $poems = $poemController->getAllPoems();
+    $poems = $poemController->getAllPoemsWithTagsAndProfilePictures();
 }
 
 $categories = $poemController->getCategories();
@@ -111,8 +110,11 @@ $categories = $poemController->getCategories();
                             </div>
                         </div>
                         <h3><?php echo htmlspecialchars($poem['title']); ?></h3>
-                        <p><?php echo nl2br(htmlspecialchars($poem['content'])); ?></p>
+                        <p style="text-align: center;"><?php echo nl2br(htmlspecialchars($poem['content'])); ?></p>
                         <small>Categoria: <?php echo htmlspecialchars($poem['category_name']); ?></small>
+                        <div class="tags" style="margin-top: 20px;">
+                            <strong>Tags: <a href=""><?php echo htmlspecialchars($poem['tags']); ?></a></strong> 
+                        </div>
                     </li>
                 <?php endforeach; ?>
             </ul>
