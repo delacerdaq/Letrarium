@@ -1,5 +1,6 @@
-CREATE DATABASE Letrarium;
-
+CREATE DATABASE Letrarium
+	DEFAULT CHARACTER SET utf8mb4
+	DEFAULT COLLATE utf8mb4_unicode_ci;
 USE Letrarium;
 
 CREATE TABLE users (
@@ -9,28 +10,13 @@ CREATE TABLE users (
     email VARCHAR(100) NOT NULL,
     password VARCHAR(255) NOT NULL,
     terms BOOLEAN NOT NULL DEFAULT 0
-);
+)ENGINE=InnoDB;
 select * from users;
-
-CREATE TABLE poems (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    content TEXT NOT NULL,
-    visibility ENUM('public', 'restricted') NOT NULL,
-    author_id INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (author_id) REFERENCES users(id)
-);
-select * from poems;
 
 CREATE TABLE categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL
-);
-
-ALTER TABLE poems
-ADD COLUMN category_id INT,
-ADD FOREIGN KEY (category_id) REFERENCES categories(id);
+)ENGINE=InnoDB;
 
 INSERT INTO categories (name) VALUES
     ('Amor'),
@@ -43,6 +29,19 @@ INSERT INTO categories (name) VALUES
     ('Humor'),
     ('Vida'),
     ('Mistério');
+
+CREATE TABLE poems (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    visibility ENUM('public', 'restricted') NOT NULL,
+    author_id INT NOT NULL,
+    category_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (author_id) REFERENCES users(id),
+    FOREIGN KEY (category_id) REFERENCES categories(id)
+)ENGINE=InnoDB;
+select * from poems;
     
 CREATE TABLE profile (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -50,7 +49,8 @@ CREATE TABLE profile (
     profile_picture VARCHAR(255),
     bio TEXT,
     FOREIGN KEY (user_id) REFERENCES users(id)
-);
+)ENGINE=InnoDB;
+select * from profile;
 
 CREATE TABLE password_resets (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -58,14 +58,14 @@ CREATE TABLE password_resets (
     token VARCHAR(255) NOT NULL,
     expires_at DATETIME NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
-);
+)ENGINE=InnoDB;
+select * from password_resets;
+
 CREATE TABLE tags (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL
-);
-
+)ENGINE=InnoDB;
 select * from tags;
-select * from poem_tags;
 
 CREATE TABLE poem_tags (
     poem_id INT,
@@ -73,24 +73,13 @@ CREATE TABLE poem_tags (
     PRIMARY KEY (poem_id, tag_id),
     FOREIGN KEY (poem_id) REFERENCES poems(id) ON DELETE CASCADE,
     FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
-);
+)ENGINE=InnoDB;
+select * from poem_tags;
 
-ALTER TABLE poem_tags
-ADD CONSTRAINT fk_poem_id
-FOREIGN KEY (poem_id) REFERENCES poems(id) ON DELETE CASCADE;
 
-SELECT * FROM information_schema.KEY_COLUMN_USAGE
-WHERE TABLE_NAME = 'poem_tags' AND CONSTRAINT_SCHEMA = 'letrarium';
 
-SELECT @@foreign_key_checks;
 
-ALTER TABLE poem_tags
-DROP PRIMARY KEY,
-ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY FIRST,
-ADD CONSTRAINT fk_poem_id
-FOREIGN KEY (poem_id) REFERENCES poems(id) ON DELETE CASCADE,
-ADD CONSTRAINT fk_tag_id
-FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE;
+
 
 
 
