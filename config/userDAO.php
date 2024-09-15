@@ -2,7 +2,14 @@
 require_once 'database.php';
 require_once '../model/user.php';
 
-class UserDAO {
+interface IUserDao {
+    public function register($username, $name, $email, $password, $terms);
+    public function validateUser($username, $password);
+    public function getUserByEmail($email);
+    public function updatePassword($id, $password);
+}
+
+class UserDAO implements IUserDao {
     private $conn;
     private $table = 'users';
 
