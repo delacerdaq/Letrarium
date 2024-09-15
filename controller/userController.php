@@ -1,27 +1,18 @@
 <?php
-include_once '../config/Database.php';
-include_once '../models/User.php';
+include_once '../model/User.php';
+include_once '../config/userDAO.php';
 
 class UserController {
-    private $db;
-    private $user;
+    private $userDAO;
 
     public function __construct() {
-        $database = new Database();
-        $this->db = $database->getConnection();
-        $this->user = new User($this->db);
+        $this->userDAO = new UserDAO();
     }
 
-    public function createUser($name, $email, $password) {
-        $this->user->name = $name;
-        $this->user->email = $email;
-        $this->user->password = $password;
-
-        if($this->user->create()) {
-            return json_encode(array("message" => "Usuário cadastrado."));
-        } else {
-            return json_encode(array("message" => "Não foi possível cadastrar usuário."));
-        }
+    public function registerUser($username, $name, $email, $password, $terms) {
+        $userDAO = new UserDAO(); 
+        return $userDAO->register($username, $name, $email, $password, $terms);
     }
+    
 }
 ?>
