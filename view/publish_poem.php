@@ -1,6 +1,5 @@
 <?php
 session_start();
-require_once '../model/Poem.php';
 require_once '../controller/poemController.php';
 
 // Verifica se o usuário está logado
@@ -19,18 +18,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $visibility = $_POST['visibility'];
     $categoryId = $_POST['category'];
     $authorId = $_SESSION['user_id'];
+    $tags = $_POST['tags']; // Novo campo para as tags
 
-    $poem = new Poem($title, $content, $visibility, $authorId, $categoryId);
-    $validationResult = $poemController->validatePoem($poem);
+    // Chama o método savePoem com todos os parâmetros necessários
+    $resultMessage = $poemController->savePoem($title, $content, $visibility, $authorId, $categoryId, $tags);
 
-    if ($validationResult === true) {
-        if ($poemController->savePoem($poem)) {
-            $successMessage = "Poema publicado com sucesso!";
-        } else {
-            $errorMessage = "Erro ao salvar o poema. Por favor, tente novamente.";
-        }
+    // Exibe a mensagem de sucesso ou erro
+    if (strpos($resultMessage, 'sucesso') !== false) {
+        $successMessage = $resultMessage;
     } else {
-        $errorMessage = $validationResult;
+        $errorMessage = $resultMessage;
     }
 }
 ?>
@@ -83,6 +80,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </option>
                     <?php endforeach; ?>
                 </select>
+            </div>
+
+            <div class="form-group">
+                <label for="tags">Tags (separadas por vírgula):</label>
+                <input type="text" id="tags" name="tags">
             </div>
 
             <button type="submit" class="btn">Publicar</button>
