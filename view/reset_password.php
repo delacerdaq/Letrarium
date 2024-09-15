@@ -1,10 +1,10 @@
 <?php
 require '../vendor/autoload.php'; 
-use PHPMailer\PHPMailer\PHPMailer; // utilização de biblioteca
+use PHPMailer\PHPMailer\PHPMailer; 
 use PHPMailer\PHPMailer\Exception;
 
 require_once '../config/userDAO.php';
-require_once '../controller/PasswordRecovery.php';
+require_once '../model/PasswordRecovery.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Conteúdo do e-mail
             $mail->isHTML(true);
             $mail->Charset = 'UTF-8'; // Configuração explícita da codificação
-            $mail->Subject = 'Recuperação de Senha';
+            $mail->Subject = 'Redifinir Senha';
             $mail->Body = 'Clique no link para redefinir sua senha: <a href="' . $recoveryLink . '">' . $recoveryLink . '</a>';
 
             $mail->send();
@@ -65,5 +65,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </form>
 </body>
 </html>
-
-
