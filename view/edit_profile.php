@@ -61,6 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <textarea name="bio" id="bio" rows="4"><?php echo htmlspecialchars($bio); ?></textarea>
         </div>
         <button type="submit">Salvar Alterações</button>
+
+        <a href="user_dashboard.php">Voltar ao Dashboard</a>
     </form>
 </div>
 
