@@ -1,6 +1,8 @@
 <?php
-require_once '../model/user.php';
-require_once '../config/userDAO.php';
+require_once '../controller/UserController.php';
+
+$successMessage = '';
+$errorMessage = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
@@ -9,14 +11,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
     $terms = isset($_POST['terms']) ? 1 : 0;
 
-    $user = new User($username, $name, $email, $password, $terms);
-    $userDAO = new UserDAO();
+    $userController = new UserController();
+    $success = $userController->registerUser($username, $name, $email, $password, $terms);
 
-    $userDAO->register($user->getUsername(), $user->getName(), $user->getEmail(), $user->getPassword(), $user->getTerms());
-
-    /*
-    echo "User registered successfully!";
-    */
+    if ($success) {
+        $successMessage = "Registro feito com sucesso!";
+    } else {
+        $errorMessage = "Não foi possível concluir o cadastro.";
+    }
 }
 ?>
 
@@ -120,8 +122,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <div class="wrapper">
         <form action="index.php" method="POST">
+
             <a href="#"><i class='bx bx-arrow-back'></i></a>
             <h1>Cadastro</h1>
+
+            <?php
+                if ($successMessage) {
+                    echo "<p style='color: green; text-align: center; margin-top: 20px;'>$successMessage</p>";
+                }
+                if ($errorMessage) {
+                    echo "<p style='color: red; text-align: center; margin-top: 20px;'>$errorMessage</p>";
+                }
+            ?>
+
             <div class="input-box">
                 <input type="text" name="username" placeholder="Nome de usuário" required>
                 <i class='bx bxs-user'></i>
