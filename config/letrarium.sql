@@ -76,6 +76,19 @@ CREATE TABLE poem_tags (
 )ENGINE=InnoDB;
 select * from poem_tags;
 
+CREATE TABLE likes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    poem_id INT NOT NULL,
+    liked BOOLEAN NOT NULL DEFAULT 1,  -- Campo para indicar se o poema foi curtido
+    liked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_like (user_id, poem_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (poem_id) REFERENCES poems(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+
+
 
 
 
