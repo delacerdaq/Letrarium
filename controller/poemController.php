@@ -1,6 +1,7 @@
 <?php
 require_once '../model/Poem.php';
 require_once '../model/Tag.php';
+require_once '../model/LikeModel.php';
 
 class PoemController {
 
@@ -81,7 +82,6 @@ class PoemController {
         }
     }    
 
-    // Método para excluir um poema
     public function deletePoem($poemId, $authorId) {
         return $this->poem->deletePoem($poemId, $authorId);
     }
@@ -102,12 +102,6 @@ class PoemController {
         return Poem::getAllPoemsWithTagsAndProfilePictures();
     }
 
-    /*
-    public function getCategories() {
-        return Poem::getCategories();
-    }
-    */
-
     public function searchPoems($keyword) {
         return Poem::search($keyword);
     }
@@ -127,5 +121,18 @@ class PoemController {
     public function getCategories() {
         return $this->poem->getCategories();
     }
+    
+    public function hasLiked($poemId, $userId) {
+        $db = new Database(); // Inicializa a conexão com o banco de dados
+        $like = new LikeModel($db->getConnection());
+        return $like->hasLiked($poemId, $userId);
+    }
+    
+    public function countLikes($poemId) {
+        $db = new Database(); // Inicializa a conexão com o banco de dados
+        $like = new LikeModel($db->getConnection());
+        return $like->countLikes($poemId);
+    }
+
 }
 ?>
