@@ -34,6 +34,7 @@ $categories = $poemController->getCategories();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
     <link rel="stylesheet" href="../css/user_dashboard.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
 
@@ -78,7 +79,7 @@ $categories = $poemController->getCategories();
                 echo "<h2>Resultados da Pesquisa para: <strong>" . htmlspecialchars($keyword) . "</strong></h2>";
                 foreach ($poems as $poem) {
                     echo "<div class='poem'>";
-                    echo "<h3>" . htmlspecialchars($poem['title']) . "</h3>";
+                    echo "<h3>" . htmlspecialchars($poem['title ']) . "</h3>";
                     echo "<p>" . nl2br(htmlspecialchars($poem['content'])) . "</p>";
                     echo "</div>";
                 }
@@ -111,6 +112,14 @@ $categories = $poemController->getCategories();
                         </div>
                         <h3><?php echo htmlspecialchars($poem['title']); ?></h3>
                         <p style="text-align: center;"><?php echo nl2br(htmlspecialchars($poem['content'])); ?></p>
+
+                        <div class="heart-icon" onclick="toggleHeart(<?php echo $poem['id']; ?>)">
+                            <svg id="heart-svg-<?php echo $poem['id']; ?>" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart <?php echo $poemController->hasLiked($poem['id'], $user_id) ? 'liked' : ''; ?>">
+                                <path d="M20.8 4.6c-1.7-1.7-4.4-1.7-6.1 0L12 7.3 9.3 4.6c-1.7-1.7-4.4-1.7-6.1 0-1.7 1.7-1.7 4.4 0 6.1L12 20.4l8.8-9.7c1.7-1.7 1.7-4.4 0-6.1z"/>
+                            </svg>
+                        </div>
+                        <small>Número de curtidas: <?php echo $poemController->countLikes($poem['id']); ?> </small>
+
                         <small>Categoria: <?php echo htmlspecialchars($poem['category_name']); ?></small>
                         <div class="tags" style="margin-top: 20px;">
                             <strong>Tags: <a href=""><?php echo htmlspecialchars($poem['tags']); ?></a></strong> 
@@ -124,6 +133,22 @@ $categories = $poemController->getCategories();
             <?php endif; ?>
         </div>
     <?php endif; ?>
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/670db84b2480f5b4f58d693c/1ia6pfq8g';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+</script>
+<!--End of Tawk.to Script-->
+
+<script src="../js/heart.js"></script>
 
 </body>
 </html>
