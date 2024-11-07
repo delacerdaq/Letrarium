@@ -203,4 +203,27 @@ nav {
     font-weight: bold;
 }
 
+.heart-icon {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.heart-icon svg {
+    stroke: grey;  /* Cor inicial do coração (não curtido) */
+    fill: none;
+    transition: stroke 0.3s ease, fill 0.3s ease;  /* Suave transição ao mudar de cor */
+}
+
+.heart-icon.liked svg {
+    stroke: red;   /* Cor do contorno do coração quando curtido */
+    fill: red;     /* Preenchimento do coração */
+}
+
+.feather-heart.liked {
+    stroke: red;
+}
+
+
+
 
