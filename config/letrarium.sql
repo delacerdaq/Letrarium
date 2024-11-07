@@ -87,6 +87,24 @@ CREATE TABLE likes (
     FOREIGN KEY (poem_id) REFERENCES poems(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+-- sendo testadas
+CREATE TABLE comments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE poem_comments (
+    poem_id INT,
+    comment_id INT,
+    user_id INT,  -- Adicionando o campo user_id como chave estrangeira
+    PRIMARY KEY (poem_id, comment_id),
+    FOREIGN KEY (poem_id) REFERENCES poems(id) ON DELETE CASCADE,
+    FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE -- Chave estrangeira para usuários
+) ENGINE=InnoDB;
+
+
 
 
 

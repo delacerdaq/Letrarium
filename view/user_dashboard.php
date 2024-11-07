@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../controller/PoemController.php';
+require_once '../controller/commentController.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../view/login.php");
@@ -25,6 +26,20 @@ if (!empty($keyword)) {
 }
 
 $categories = $poemController->getCategories();
+
+// Verifica se o comentário foi enviado
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && isset($_POST['poem_id'])) {
+    $commentController = new CommentController();
+    $poemId = $_POST['poem_id'];
+    $userId = $_SESSION['user_id'];  // Obtém o user_id da sessão
+    $content = $_POST['comment_text'];
+
+    if ($commentController->addComment($poemId, $userId, $content)) {
+        echo "<p>Comentário enviado com sucesso!</p>";
+    } else {
+        echo "<p>Erro ao enviar o comentário.</p>";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -124,6 +139,41 @@ $categories = $poemController->getCategories();
                         <div class="tags" style="margin-top: 20px;">
                             <strong>Tags: <a href=""><?php echo htmlspecialchars($poem['tags']); ?></a></strong> 
                         </div>
+
+                        <!-- Botão para mostrar comentários -->
+<!-- Botão para mostrar o pop-up de comentários -->
+<button onclick="showCommentsPopup(<?php echo $poem['id']; ?>)">Ver Comentários</button>
+
+<!-- Pop-up de Comentários -->
+<div id="comments-popup-<?php echo $poem['id']; ?>" class="comments-popup">
+    <div class="popup-header">
+        <strong>Comentários</strong>
+        <button onclick="closeCommentsPopup(<?php echo $poem['id']; ?>)">Fechar</button>
+    </div>
+
+    <div class="popup-content">
+    <form method="POST" action="user_dashboard.php">
+    <textarea name="comment_text" placeholder="Escreva seu comentário"></textarea>
+    <input type="hidden" name="poem_id" value="<?php echo $poem['id']; ?>">
+    <button type="submit">Enviar Comentário</button>
+</form>
+
+        <div class="comments">
+            <?php
+            $commentController = new CommentController();
+            $comments = $commentController->getCommentsByPoemId($poem['id']);
+            foreach ($comments as $comment) {
+                echo "<div class='comment'>";
+                echo "<p>" . nl2br(htmlspecialchars($comment['content'])) . "</p>";
+                echo "<small>Comentado por: " . htmlspecialchars($comment['user_id']) . " em " . $comment['created_at'] . "</small>";
+                echo "</div>";
+            }
+            ?>
+        </div>
+    </div>
+</div>
+
+
                     </li>
                 <?php endforeach; ?>
             </ul>
@@ -133,6 +183,7 @@ $categories = $poemController->getCategories();
             <?php endif; ?>
         </div>
     <?php endif; ?>
+
 
 <!--Start of Tawk.to Script-->
 <script type="text/javascript">
@@ -149,6 +200,17 @@ $categories = $poemController->getCategories();
 <!--End of Tawk.to Script-->
 
 <script src="../js/heart.js"></script>
+
+<script>
+    function showCommentsPopup(poemId) {
+        document.getElementById('comments-popup-' + poemId).style.display = 'block';
+        loadComments(poemId);
+    }
+
+    function closeCommentsPopup(poemId) {
+        document.getElementById('comments-popup-' + poemId).style.display = 'none';
+    }
+</script>
 
 </body>
 </html>
