@@ -1,5 +1,5 @@
 <?php
-require_once '../controller/PasswordRecovery.php';
+require_once '../model/PasswordRecovery.php';
 require_once '../config/userDAO.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
