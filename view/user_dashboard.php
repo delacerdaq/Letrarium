@@ -34,11 +34,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
     $userId = $_SESSION['user_id'];  // Obtém o user_id da sessão
     $content = $_POST['comment_text'];
 
+    $commentController->addComment($poemId, $userId, $content);
+
+    /*
     if ($commentController->addComment($poemId, $userId, $content)) {
         echo "<p>Comentário enviado com sucesso!</p>";
     } else {
         echo "<p>Erro ao enviar o comentário.</p>";
     }
+    */
 }
 ?>
 
@@ -129,10 +133,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
                         <p style="text-align: center;"><?php echo nl2br(htmlspecialchars($poem['content'])); ?></p>
 
                         <div class="heart-icon" onclick="toggleHeart(<?php echo $poem['id']; ?>)">
-                            <svg id="heart-svg-<?php echo $poem['id']; ?>" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart <?php echo $poemController->hasLiked($poem['id'], $user_id) ? 'liked' : ''; ?>">
-                                <path d="M20.8 4.6c-1.7-1.7-4.4-1.7-6.1 0L12 7.3 9.3 4.6c-1.7-1.7-4.4-1.7-6.1 0-1.7 1.7-1.7 4.4 0 6.1L12 20.4l8.8-9.7c1.7-1.7 1.7-4.4 0-6.1z"/>
-                            </svg>
+                        <svg id="heart-svg-<?php echo $poem['id']; ?>" data-poem-id="<?php echo $poem['id']; ?>" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart <?php echo $poemController->hasLiked($poem['id'], $user_id) ? 'liked' : ''; ?>">
+                            <path d="M20.8 4.6c-1.7-1.7-4.4-1.7-6.1 0L12 7.3 9.3 4.6c-1.7-1.7-4.4-1.7-6.1 0-1.7 1.7-1.7 4.4 0 6.1L12 20.4l8.8-9.7c1.7-1.7 1.7-4.4 0-6.1z"/>
+                        </svg>
                         </div>
+
                         <small>Número de curtidas: <?php echo $poemController->countLikes($poem['id']); ?> </small>
 
                         <small>Categoria: <?php echo htmlspecialchars($poem['category_name']); ?></small>
@@ -140,40 +145,61 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
                             <strong>Tags: <a href=""><?php echo htmlspecialchars($poem['tags']); ?></a></strong> 
                         </div>
 
-                        <!-- Botão para mostrar comentários -->
-<!-- Botão para mostrar o pop-up de comentários -->
-<button onclick="showCommentsPopup(<?php echo $poem['id']; ?>)">Ver Comentários</button>
+                        <!-- Botão para mostrar o pop-up de comentários -->
+                        <button onclick="showCommentsPopup(<?php echo $poem['id']; ?>)">Ver Comentários</button>
 
-<!-- Pop-up de Comentários -->
-<div id="comments-popup-<?php echo $poem['id']; ?>" class="comments-popup">
-    <div class="popup-header">
-        <strong>Comentários</strong>
-        <button onclick="closeCommentsPopup(<?php echo $poem['id']; ?>)">Fechar</button>
-    </div>
+                        <!-- Pop-up de Comentários -->
+                        <div id="comments-popup-<?php echo $poem['id']; ?>" class="comments-popup">
+                            <div class="popup-header">
+                                <strong>Comentários</strong>
+                                <button onclick="closeCommentsPopup(<?php echo $poem['id']; ?>)">Fechar</button>
+                            </div>
 
-    <div class="popup-content">
-    <form method="POST" action="user_dashboard.php">
-    <textarea name="comment_text" placeholder="Escreva seu comentário"></textarea>
-    <input type="hidden" name="poem_id" value="<?php echo $poem['id']; ?>">
-    <button type="submit">Enviar Comentário</button>
-</form>
+                        <div class="popup-content">
+                        <form method="POST" action="user_dashboard.php">
+                            <textarea name="comment_text" placeholder="Escreva seu comentário"></textarea>
+                            <input type="hidden" name="poem_id" value="<?php echo $poem['id']; ?>">
+                            <button type="submit">Enviar Comentário</button>
+                        </form>
 
-        <div class="comments">
-            <?php
-            $commentController = new CommentController();
-            $comments = $commentController->getCommentsByPoemId($poem['id']);
-            foreach ($comments as $comment) {
-                echo "<div class='comment'>";
-                echo "<p>" . nl2br(htmlspecialchars($comment['content'])) . "</p>";
-                echo "<small>Comentado por: " . htmlspecialchars($comment['user_id']) . " em " . $comment['created_at'] . "</small>";
-                echo "</div>";
-            }
-            ?>
-        </div>
-    </div>
-</div>
+                        <div class="comments">
+                        <?php
+                        $commentController = new CommentController();
+                        $comments = $commentController->getCommentsByPoemId($poem['id']);
+                        foreach ($comments as $comment) {
+                            echo "<div class='comment'>";
 
+                            // Exibindo a foto de perfil e o nome do usuário
+                            echo "<div class='comment-header'>";
+        
+                            // Foto de perfil ou placeholder
+                            echo "<div class='comment-author-picture'>";
+                            if (!empty($comment['profile_picture'])) {
+                                echo "<img src='" . htmlspecialchars($comment['profile_picture']) . "' alt='Foto de perfil' class='profile-picture' />";
+                            } else {
+                                echo "<div class='placeholder'>";
+                                echo '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"><path d="M12 2C6.579 2 2 6.579 2 12s4.579 10 10 10 10-4.579 10-10S17.421 2 12 2zm0 5c1.727 0 3 1.272 3 3s-1.273 3-3 3c-1.726 0-3-1.272-3-3s1.274-3 3-3zm-5.106 9.772c.897-1.32 2.393-2.2 4.106-2.2h2c1.714 0 3.209.88 4.106 2.2C15.828 18.14 14.015 19 12 19s-3.828-.86-5.106-2.228z"></path></svg>';
+                                echo "</div>";
+                            }
+                            echo "</div>";
 
+                            // Nome do usuário
+                            echo "<p class='user-name'>" . htmlspecialchars($comment['name']) . "</p>";
+
+                            echo "</div>"; // Fecha div comment-header
+
+                            // Conteúdo do comentário
+                            echo "<p class='comment-content'>" . nl2br(htmlspecialchars($comment['content'])) . "</p>";
+
+                            // Data do comentário
+                            echo "<small class='comment-date'>" . $comment['created_at'] . "</small>";
+
+                            echo "</div>"; // Fecha div comment
+                        }
+                        ?>
+                        </div>
+                        </div>
+                        </div>
                     </li>
                 <?php endforeach; ?>
             </ul>
@@ -183,7 +209,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
             <?php endif; ?>
         </div>
     <?php endif; ?>
-
 
 <!--Start of Tawk.to Script-->
 <script type="text/javascript">
