@@ -37,9 +37,11 @@ class Comment {
     // Recupera os comentários de um poema
     public function getCommentsByPoemId($poemId) {
         $stmt = $this->db->prepare("
-            SELECT comments.id, comments.content, comments.created_at, poem_comments.user_id
+            SELECT comments.id, comments.content, comments.created_at, poem_comments.user_id, users.name, profile.profile_picture
             FROM comments
             INNER JOIN poem_comments ON comments.id = poem_comments.comment_id
+            INNER JOIN users ON poem_comments.user_id = users.id
+            join profile on users.id = profile.user_id
             WHERE poem_comments.poem_id = :poemId
             ORDER BY comments.created_at DESC
         ");
@@ -47,5 +49,6 @@ class Comment {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
 }
 ?>
