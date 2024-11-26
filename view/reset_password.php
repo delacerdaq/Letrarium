@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->Port = 587;
 
             // Remetente e destinatário
-            $mail->setFrom('', 'Letrarium');
+            $mail->setFrom($email, 'Letrarium');
             $mail->addAddress($email);
 
             // Conteúdo do e-mail
@@ -56,12 +56,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperar a senha</title>
+    <link rel="stylesheet" href="../css/reset_password.css">
 </head>
 <body>
-    <form method="POST" action="">
-    <label for="email">E-mail:</label>
-    <input type="email" name="email" id="email" required>
-    <button type="submit">Recuperar Senha</button>
-</form>
+    <div class="container">
+        <form method="POST" action="">
+            <h2>Recuperar | Trocar senha</h2>
+
+            <label for="email">Escreva seu email cadastrado para receber isntruções acerca da recuperação de sua senha:</label>
+            <input type="email" name="email" id="email" placeholder="Escreva aqui seu email" required>
+            <button type="submit">Recuperar Senha</button>
+        </form>
+        
+        <!-- Links para Voltar e Ir para o Gmail -->
+        <a href="https://mail.google.com" class="link-button">Ir para o Gmail</a>
+        <a href="../view/user_profile.php" class="link-button">Voltar</a>
+    </div>
 </body>
 </html>
