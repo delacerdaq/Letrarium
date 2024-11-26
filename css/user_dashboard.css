@@ -208,22 +208,115 @@ nav {
     height: 25px;
     cursor: pointer;
 }
-
 .heart-icon svg {
     stroke: grey;  /* Cor inicial do coração (não curtido) */
     fill: none;
     transition: stroke 0.3s ease, fill 0.3s ease;  /* Suave transição ao mudar de cor */
 }
-
 .heart-icon.liked svg {
     stroke: red;   /* Cor do contorno do coração quando curtido */
     fill: red;     /* Preenchimento do coração */
 }
-
 .feather-heart.liked {
     stroke: red;
 }
 
+/* comentários postados | get */
+.comment {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+.comment-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.profile-picture {
+    width: 40px;
+    height: 40px;
+    object-fit: cover; 
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.placeholder {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ddd;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.user-name {
+    font-weight: bold;
+    margin: 0;
+}
+.comment-content {
+    margin: 5px 0;
+}
+.comment-date {
+    font-size: 0.85em;
+    color: #888;
+}
+
+/* Estilo para o botão de "Ver Comentários" e "Fechar" */
+button {
+    padding: 10px 15px;
+    border-radius: 12px;
+    margin: 5px;
+    cursor: pointer;
+    font-family: "Josefin Sans", sans-serif;
+}
+/* Botão "Ver Comentários" e "Fechar" com fundo roxo e texto branco */
+button:not(.send-comment-btn) {
+    background-color: #6a0dad;
+    color: #ffffff;
+    border: none;
+}
+/* Botão "Enviar Comentário" com fundo branco e texto roxo */
+button.send-comment-btn {
+    background-color: #ffffff;
+    color: #6a0dad;
+    border: 1px solid #6a0dad;
+}
+/* Pop-up de Comentários com fundo roxo claro e bordas arredondadas */
+.comments-popup {
+    background-color: #f3e5f5;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+/* Estilo para o cabeçalho do pop-up */
+.popup-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+/* Estilo para o texto "Comentários" */
+.popup-header strong {
+    font-size: 18px;
+    color: #6a0dad;
+}
+/* Espaçamento e estilo do formulário */
+.popup-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+/* Estilo para a área de texto */
+textarea[name="comment_text"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    resize: vertical;
+}
 
 
 
