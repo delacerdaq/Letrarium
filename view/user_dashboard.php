@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
                 echo "<h2>Resultados da Pesquisa para: <strong>" . htmlspecialchars($keyword) . "</strong></h2>";
                 foreach ($poems as $poem) {
                     echo "<div class='poem'>";
-                    echo "<h3>" . htmlspecialchars($poem['title ']) . "</h3>";
+                    echo "<h3>" . htmlspecialchars($poem['title']) . "</h3>";
                     echo "<p>" . nl2br(htmlspecialchars($poem['content'])) . "</p>";
                     echo "</div>";
                 }
