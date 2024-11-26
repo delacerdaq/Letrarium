@@ -1,17 +1,22 @@
 <?php
-require_once '../model/Profile.php';
+require_once '../config/ProfileDAO.php';
 
 class ProfileController {
 
+    private $profileDAO;
+
+    public function __construct() {
+        $this->profileDAO = new ProfileDAO();
+    }
+
     // Get profile by user ID
     public function getProfileByUserId($userId) {
-        return Profile::fetchProfileByUserId($userId);
+        return $this->profileDAO::fetchProfileByUserId($userId);
     }
 
     // Update entire profile (bio and picture)
     public function updateProfile($userId, $data) {
-        $profile = new Profile($userId);
-        return $profile->updateProfile($userId, $data);
+        return $this->profileDAO->updateProfile($userId, $data);
     }
 
     // Upload photo and update profile picture
@@ -51,20 +56,17 @@ class ProfileController {
 
     // Update profile picture in the profile table
     public function updateProfilePicture($userId, $profilePicture) {
-        $profile = new Profile($userId);
-        return $profile->updateProfilePicture($userId, $profilePicture);
+        return $this->profileDAO->updateProfilePicture($userId, $profilePicture);
     }
 
     // Update bio
     public function updateBio($userId, $bio) {
-        $profile = new Profile($userId);
-        return $profile->updateBio($userId, $bio);
+        return $this->profileDAO->updateBio($userId, $bio);
     }
 
     // Create profile if not exists
     public function createProfile($userId, $profilePicture = null, $bio = null) {
-        $profile = new Profile($userId, $profilePicture, $bio);
-        return $profile->createProfile($userId, $profilePicture, $bio);
+        return $this->profileDAO->createProfile($userId, $profilePicture, $bio);
     }
 }
 ?>
