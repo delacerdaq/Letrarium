@@ -54,9 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <p class="font-semibold">Letrarium</p>
             </div>
             <div class="space-x-4">
-                <a href="#" class="hover:text-gray-300">Home</a>
-                <a href="#" class="hover:text-gray-300">Explorar</a>
-                <a href="#" class="hover:text-gray-300">Cadastrar</a>
+                <a href="user_dashboard.php" class="hover:text-gray-300">Home</a>
+                <a href="user_dashboard.php" class="hover:text-gray-300">Explorar</a>
                 <a href="../view/login.php" class="hover:text-gray-300">Login</a>
             </div>
         </nav>
@@ -73,21 +72,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <p class="text-md md:text-lg mt-4 text-gray-200">
                         Leia poemas autorais e escreva os seus próprios, permitindo que cada palavra seja uma expressão única da sua alma.
                     </p>
-                    <a href="#" class="mt-6 px-4 py-2 bg-white text-purple-700 rounded hover:bg-gray-200 border border-gray-100">Comece agora!</a>
+                    <a href="user_dashboard.php" class="mt-6 px-4 py-2 bg-white text-purple-700 rounded hover:bg-gray-200 border border-gray-100">Comece agora!</a>
                 </div>
                 <div class="w-full h-full flex-shrink-0 flex flex-col justify-center items-center bg-purple-700 text-center px-6">
                     <h1 class="text-2xl md:text-4xl font-bold text-white">Explore o mundo da poesia</h1>
                     <p class="text-md md:text-lg mt-4 text-gray-200">
                         Descubra novos talentos, leia histórias emocionantes e compartilhe sua paixão por palavras.
                     </p>
-                    <a href="#" class="mt-6 px-4 py-2 bg-white text-purple-700 rounded hover:bg-gray-200 border border-gray-100">Explore agora!</a>
+                    <a href="user_dashboard.php" class="mt-6 px-4 py-2 bg-white text-purple-700 rounded hover:bg-gray-200 border border-gray-100">Explore agora!</a>
                 </div>
                 <div class="w-full h-full flex-shrink-0 flex flex-col justify-center items-center bg-purple-700 text-center px-6">
                     <h1 class="text-2xl md:text-4xl font-bold text-white">Faça parte da nossa comunidade</h1>
                     <p class="text-md md:text-lg mt-4 text-gray-200">
                         Conecte-se com escritores e leitores de todo o mundo em um só lugar.
                     </p>
-                    <a href="#" class="mt-6 px-4 py-2 bg-white text-purple-700 rounded hover:bg-gray-200 border border-gray-100">Junte-se a nós!</a>
+                    <a href="user_dashboard.php" class="mt-6 px-4 py-2 bg-white text-purple-700 rounded hover:bg-gray-200 border border-gray-100">Junte-se a nós!</a>
                 </div>
             </div>
         </div>
