@@ -85,8 +85,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
     </div>
 
     <div id="welcome-section">
-        <h1>Welcome, <?php echo htmlspecialchars($username); ?>!</h1>
-        <p>This is your dashboard.</p>
+        <h2>Bem-vindo(a), <?php echo htmlspecialchars($username); ?>!</h2>
+        <p>Este é o seu dashboard.</p>
         <a href="../view/logout.php">Logout</a>
     </div>
 
@@ -116,15 +116,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
                 <?php foreach ($poems as $poem): ?>
                     <li>
                         <div class="author-info">
-                            <div class="author-picture">
-                                <?php if (!empty($poem['profile_picture'])): ?>
-                                    <img src="<?php echo htmlspecialchars($poem['profile_picture']); ?>" alt="Profile Picture">
-                                <?php else: ?>
-                                    <div class="placeholder">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24"><path d="M12 2C6.579 2 2 6.579 2 12s4.579 10 10 10 10-4.579 10-10S17.421 2 12 2zm0 5c1.727 0 3 1.272 3 3s-1.273 3-3 3c-1.726 0-3-1.272-3-3s1.274-3 3-3zm-5.106 9.772c.897-1.32 2.393-2.2 4.106-2.2h2c1.714 0 3.209.88 4.106 2.2C15.828 18.14 14.015 19 12 19s-3.828-.86-5.106-2.228z"></path></svg>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
+                        <div class="author-picture">
+                            <?php if (!empty($poem['profile_picture']) && file_exists($poem['profile_picture'])): ?>
+                                <img src="<?php echo htmlspecialchars($poem['profile_picture']); ?>" alt="Profile Picture">
+                            <?php else: ?>
+                                <div class="placeholder">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.579 2 2 6.579 2 12s4.579 10 10 10 10-4.579 10-10S17.421 2 12 2zm0 5c1.727 0 3 1.272 3 3s-1.273 3-3 3c-1.726 0-3-1.272-3-3s1.274-3 3-3zm-5.106 9.772c.897-1.32 2.393-2.2 4.106-2.2h2c1.714 0 3.209.88 4.106 2.2C15.828 18.14 14.015 19 12 19s-3.828-.86-5.106-2.228z"></path>
+                                </svg>
+                                </div>
+                            <?php endif; ?>
+                        </div>
                             <div class="author-name">
                                 <?php echo htmlspecialchars($poem['username']); ?>
                             </div>
@@ -132,12 +134,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
                         <h3><?php echo htmlspecialchars($poem['title']); ?></h3>
                         <p style="text-align: center;"><?php echo nl2br(htmlspecialchars($poem['content'])); ?></p>
 
+                        <!--
                         <div class="heart-icon" onclick="toggleHeart(<?php echo $poem['id']; ?>)">
-                        <svg id="heart-svg-<?php echo $poem['id']; ?>" data-poem-id="<?php echo $poem['id']; ?>" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart <?php echo $poemController->hasLiked($poem['id'], $user_id) ? 'liked' : ''; ?>">
-                            <path d="M20.8 4.6c-1.7-1.7-4.4-1.7-6.1 0L12 7.3 9.3 4.6c-1.7-1.7-4.4-1.7-6.1 0-1.7 1.7-1.7 4.4 0 6.1L12 20.4l8.8-9.7c1.7-1.7 1.7-4.4 0-6.1z"/>
-                        </svg>
+                            <svg id="heart-svg-<?php echo $poem['id']; ?>" data-poem-id="<?php echo $poem['id']; ?>" 
+                                xmlns="http://www.w3.org/2000/svg" 
+                                viewBox="0 0 24 24" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                stroke-width="2" 
+                                stroke-linecap="round" 
+                                stroke-linejoin="round" 
+                                class="feather feather-heart <?php echo $poemController->hasLiked($poem['id'], $user_id) ? 'liked' : ''; ?>">
+                                <path d="M20.8 4.6c-1.7-1.7-4.4-1.7-6.1 0L12 7.3 9.3 4.6c-1.7-1.7-4.4-1.7-6.1 0-1.7 1.7-1.7 4.4 0 6.1L12 20.4l8.8-9.7c1.7-1.7 1.7-4.4 0-6.1z"/>
+                            </svg>
                         </div>
+                        -->
 
+                        <div class="thumbs-container">
+                            <div class="thumbs-up-icon" onclick="toggleLike(<?php echo $poem['id']; ?>)">
+                                <svg id="thumb-up-<?php echo $poem['id']; ?>" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: <?php echo $poemController->hasLiked($poem['id'], $user_id) ? 'green' : 'black'; ?>;">
+                                <path d="M20 8h-5.612l1.123-3.367c.202-.608.1-1.282-.275-1.802S14.253 2 13.612 2H12c-.297 0-.578.132-.769.36L6.531 8H4c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h13.307a2.01 2.01 0 0 0 1.873-1.298l2.757-7.351A1 1 0 0 0 22 12v-2c0-1.103-.897-2-2-2zM4 10h2v9H4v-9zm16 1.819L17.307 19H8V9.362L12.468 4h1.146l-1.562 4.683A.998.998 0 0 0 13 10h7v1.819z"></path>
+                                </svg>
+                            </div>
+
+                            <div class="thumbs-down-icon" onclick="toggleDislike(<?php echo $poem['id']; ?>)">
+                                <svg id="thumb-down-<?php echo $poem['id']; ?>" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: <?php echo $poemController->hasLiked($poem['id'], $user_id) ? 'black' : 'red'; ?>;">
+                                <path d="M20 3H6.693A2.01 2.01 0 0 0 4.82 4.298l-2.757 7.351A1 1 0 0 0 2 12v2c0 1.103.897 2 2 2h5.612L8.49 19.367a2.004 2.004 0 0 0 .274 1.802c.376.52.982.831 1.624.831H12c.297 0 .578-.132.769-.36l4.7-5.64H20c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zm-8.469 17h-1.145l1.562-4.684A1 1 0 0 0 11 14H4v-1.819L6.693 5H16v9.638L11.531 20zM18 14V5h2l.001 9H18z"></path>
+                                </svg>
+                            </div>
+                        </div>
+             
                         <small>Número de curtidas: <?php echo $poemController->countLikes($poem['id']); ?> </small>
 
                         <small>Categoria: <?php echo htmlspecialchars($poem['category_name']); ?></small>
@@ -146,13 +172,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
                         </div>
 
                         <!-- Botão para mostrar o pop-up de comentários -->
-                        <button onclick="showCommentsPopup(<?php echo $poem['id']; ?>)">Ver Comentários</button>
+                        <button onclick="toggleCommentsPopup(<?php echo $poem['id']; ?>)">Ver Comentários</button>
 
                         <!-- Pop-up de Comentários -->
-                        <div id="comments-popup-<?php echo $poem['id']; ?>" class="comments-popup">
+                        <div id="comments-popup-<?php echo $poem['id']; ?>" class="comments-popup" style="display: none;">
                             <div class="popup-header">
                                 <strong>Comentários</strong>
-                                <button onclick="closeCommentsPopup(<?php echo $poem['id']; ?>)">Fechar</button>
+                                <button onclick="toggleCommentsPopup(<?php echo $poem['id']; ?>)">Fechar</button>
                             </div>
 
                         <div class="popup-content">
@@ -174,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
         
                             // Foto de perfil ou placeholder
                             echo "<div class='comment-author-picture'>";
-                            if (!empty($comment['profile_picture'])) {
+                            if (!empty($poem['profile_picture']) && file_exists($poem['profile_picture'])) {
                                 echo "<img src='" . htmlspecialchars($comment['profile_picture']) . "' alt='Foto de perfil' class='profile-picture' />";
                             } else {
                                 echo "<div class='placeholder'>";
@@ -224,18 +250,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
 </script>
 <!--End of Tawk.to Script-->
 
-<script src="../js/heart.js"></script>
+<script src="../js/like.js"></script>
 
-<script>
-    function showCommentsPopup(poemId) {
-        document.getElementById('comments-popup-' + poemId).style.display = 'block';
-        loadComments(poemId);
-    }
-
-    function closeCommentsPopup(poemId) {
-        document.getElementById('comments-popup-' + poemId).style.display = 'none';
-    }
-</script>
+<script src="../js/comments.js"></script>
 
 </body>
 </html>
