@@ -9,6 +9,9 @@ body, html {
     height: 100%;
     font-family: "Josefin Sans", sans-serif;
 }
+.tags a{
+    color: #6a0dad;
+}
 #header {
     height: 8vh; /* Altura do cabeçalho */
     display: flex;
