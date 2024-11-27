@@ -107,7 +107,7 @@ nav {
     border-radius: 20px;
 }
 #welcome-section {
-    margin-top: 3%;
+    margin: 15px;
     text-align: center;
 }
 /* Resultados da pesquisa */
@@ -240,12 +240,11 @@ nav {
     margin-right: 10px;
 }
 .placeholder {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    background-color: #ddd;
+    justify-content: center; 
     border-radius: 50%;
     margin-right: 10px;
 }
@@ -317,6 +316,32 @@ textarea[name="comment_text"] {
     border: 1px solid #ddd;
     resize: vertical;
 }
+
+.thumbs-up-icon svg {
+    cursor: pointer;
+    transition: fill 0.3s ease;
+}
+
+.thumbs-down-icon svg {
+    cursor: pointer;
+    transition: fill 0.3s ease;
+}
+
+.thumbs-up-icon svg:hover, .thumbs-down-icon svg:hover {
+    fill: #007bff;
+}
+
+.thumbs-container {
+    display: flex;
+    gap: 10px; /* Leve espaçamento entre os ícones */
+    align-items: center; /* Alinha os ícones no centro verticalmente */
+}
+
+.thumbs-up-icon, .thumbs-down-icon {
+    cursor: pointer; /* Para indicar que os ícones são clicáveis */
+}
+
+
 
 
 
