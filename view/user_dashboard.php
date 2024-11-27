@@ -134,22 +134,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
                         <h3><?php echo htmlspecialchars($poem['title']); ?></h3>
                         <p style="text-align: center;"><?php echo nl2br(htmlspecialchars($poem['content'])); ?></p>
 
-                        <!--
-                        <div class="heart-icon" onclick="toggleHeart(<?php echo $poem['id']; ?>)">
-                            <svg id="heart-svg-<?php echo $poem['id']; ?>" data-poem-id="<?php echo $poem['id']; ?>" 
-                                xmlns="http://www.w3.org/2000/svg" 
-                                viewBox="0 0 24 24" 
-                                fill="none" 
-                                stroke="currentColor" 
-                                stroke-width="2" 
-                                stroke-linecap="round" 
-                                stroke-linejoin="round" 
-                                class="feather feather-heart <?php echo $poemController->hasLiked($poem['id'], $user_id) ? 'liked' : ''; ?>">
-                                <path d="M20.8 4.6c-1.7-1.7-4.4-1.7-6.1 0L12 7.3 9.3 4.6c-1.7-1.7-4.4-1.7-6.1 0-1.7 1.7-1.7 4.4 0 6.1L12 20.4l8.8-9.7c1.7-1.7 1.7-4.4 0-6.1z"/>
-                            </svg>
-                        </div>
-                        -->
-
                         <div class="thumbs-container">
                             <div class="thumbs-up-icon" onclick="toggleLike(<?php echo $poem['id']; ?>)">
                                 <svg id="thumb-up-<?php echo $poem['id']; ?>" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: <?php echo $poemController->hasLiked($poem['id'], $user_id) ? 'green' : 'black'; ?>;">
@@ -167,8 +151,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
                         <small>Número de curtidas: <?php echo $poemController->countLikes($poem['id']); ?> </small>
 
                         <small>Categoria: <?php echo htmlspecialchars($poem['category_name']); ?></small>
+
                         <div class="tags" style="margin-top: 20px;">
-                            <strong>Tags: <a href=""><?php echo htmlspecialchars($poem['tags']); ?></a></strong> 
+                        <strong>Tags: 
+                        <?php
+                            $tagsArray = explode(',', $poem['tags']); // Supondo que 'tags' seja uma string separada por vírgulas
+                        foreach ($tagsArray as $tag) {
+                        echo '<a href="poems_by_tag.php?tag=' . urlencode(trim($tag)) . '">' . htmlspecialchars(trim($tag)) . '</a> ';
+                        }
+                        ?>
+                        </strong>
                         </div>
 
                         <!-- Botão para mostrar o pop-up de comentários -->
