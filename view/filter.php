@@ -40,20 +40,18 @@ $categories = $poemController->getCategories();
                 <a href="publish_poem.php">criar</a>
             </div>
 
-            
-        <form method="GET" action="filter.php">
-            <label for="category">Filtrar por categoria:</label>
-            <select name="category_id" id="category">
-                <option value="">Todas as Categorias</option>
-                <?php foreach ($categories as $category): ?>
-                    <option value="<?php echo $category['id']; ?>" <?php if ($categoryFilter == $category['id']) echo 'selected'; ?>>
-                        <?php echo htmlspecialchars($category['name']); ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <button type="submit">Filtrar</button>
-        </form>
-
+            <form method="GET" action="filter.php">
+                <label for="category">Filtrar por categoria:</label>
+                <select name="category_id" id="category">
+                    <option value="">Todas as Categorias</option>
+                    <?php foreach ($categories as $category): ?>
+                        <option value="<?php echo $category['id']; ?>" <?php if ($categoryFilter == $category['id']) echo 'selected'; ?>>
+                            <?php echo htmlspecialchars($category['name']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <button type="submit">Filtrar</button>
+            </form>
 
             <div id="link-profile">
                 <a href="user_profile.php">
@@ -65,18 +63,37 @@ $categories = $poemController->getCategories();
 
     <div id="welcome">
         <p>Explore novos tipos de escrita e criatividade.</p>
+        <a href="user_dashboard.php" class="back-link">Voltar ao Dashboard</a>
     </div>
 
     <div id="poems-section">
         
-
         <?php if (!empty($poems)): ?>
             <ul>
                 <?php foreach ($poems as $poem): ?>
                     <li>
+                        <!-- Exibe a foto de perfil do autor e nome ao lado -->
+                        <div class="author-info">
+                            <div class="author-picture">
+                                <?php if (!empty($poem['profile_picture']) && file_exists($poem['profile_picture'])): ?>
+                                    <img src="<?php echo htmlspecialchars($poem['profile_picture']); ?>" alt="Profile Picture">
+                                <?php else: ?>
+                                    <div class="placeholder">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="40" height="40">
+                                            <path d="M12 2C6.579 2 2 6.579 2 12s4.579 10 10 10 10-4.579 10-10S17.421 2 12 2zm0 5c1.727 0 3 1.272 3 3s-1.273 3-3 3c-1.726 0-3-1.272-3-3s1.274-3 3-3zm-5.106 9.772c.897-1.32 2.393-2.2 4.106-2.2h2c1.714 0 3.209.88 4.106 2.2C15.828 18.14 14.015 19 12 19s-3.828-.86-5.106-2.228z"></path>
+                                        </svg>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="author-name">
+                                <?php echo htmlspecialchars($poem['username']); ?>
+                            </div>
+                        </div>
+
                         <h3><?php echo htmlspecialchars($poem['title']); ?></h3>
                         <p style="text-align: center;"><?php echo nl2br(htmlspecialchars($poem['content'])); ?></p>
                         <small>Categoria: <?php echo htmlspecialchars($poem['category_name']); ?></small>
+
                     </li>
                 <?php endforeach; ?>
             </ul>
