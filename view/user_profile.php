@@ -15,7 +15,7 @@ $profileController = new ProfileController();
 $profile = $profileController->getProfileByUserId($user_id);
 
 // Verifica se o perfil foi encontrado e se há uma foto de perfil
-$profilePicture = (!empty($poem['profile_picture']) && file_exists($poem['profile_picture']));
+$profilePicture = !empty($profile['profile_picture']) ? $profile['profile_picture'] : null;
 $bio = !empty($profile['bio']) ? $profile['bio'] : '';
 
 // Obtém os poemas publicados pelo usuário
