@@ -27,151 +27,156 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <title>Landing Page</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+        }
+    </style>
 </head>
 
-<body>
-    
-    <div id="header">
-        <nav id="nav-bar">
-            <div id="logo">
-                <img src="" alt="">
-                <p>Letrarium</p>
-            </div>
+<body class="bg-gray-50 text-gray-800">
 
-            <div class="links">
-                <a href="">Home</a>
-                <a href="">Explorar</a>
-                <a id="cadastrar" href="">Cadastrar</a>
-                <a id="logar" href="../view/login.php">Login</a>
+    <!-- Header -->
+    <header class="bg-purple-700 text-white p-4">
+        <nav class="flex justify-between items-center container mx-auto">
+            <div class="flex items-center space-x-2">
+                <div class="bg-white rounded-full h-10 w-10 flex items-center justify-center">
+                    <p class="text-purple-700 font-bold">L</p>
+                </div>
+                <p class="font-semibold">Letrarium</p>
             </div>
-
+            <div class="space-x-4">
+                <a href="#" class="hover:text-gray-300">Home</a>
+                <a href="#" class="hover:text-gray-300">Explorar</a>
+                <a href="#" class="hover:text-gray-300">Cadastrar</a>
+                <a href="../view/login.php" class="hover:text-gray-300">Login</a>
+            </div>
         </nav>
+    </header>
 
-        <div class="intro">
-            <div id="img-intro">
-                <img src="../img/books.png" alt="">
-            </div>
-
-            <div id="texto-intro">
-                <h1>Nós somos apaixonados por escrita</h1>
-                <p>Leia poemas autorais e escreva os seus próprios, <br>
-                    permitindo que cada palavra seja uma expressão <br>
-                    única da sua alma.</p>
-                <a href="" id="comece-agora">Comece agora!</a>
+    <!-- Intro Section -->
+<section class="bg-purple-700 py-12">
+    <div class="container mx-auto">
+        <div class="carousel-container w-full h-64 md:h-96 overflow-hidden rounded-lg">
+            <!-- Carousel -->
+            <div id="carousel" class="carousel w-full h-full">
+                <div class="w-full h-full flex-shrink-0 flex flex-col justify-center items-center bg-purple-700 text-center px-6">
+                    <h1 class="text-2xl md:text-4xl font-bold text-white">Nós somos apaixonados por escrita</h1>
+                    <p class="text-md md:text-lg mt-4 text-gray-200">
+                        Leia poemas autorais e escreva os seus próprios, permitindo que cada palavra seja uma expressão única da sua alma.
+                    </p>
+                    <a href="#" class="mt-6 px-4 py-2 bg-white text-purple-700 rounded hover:bg-gray-200 border border-gray-100">Comece agora!</a>
+                </div>
+                <div class="w-full h-full flex-shrink-0 flex flex-col justify-center items-center bg-purple-700 text-center px-6">
+                    <h1 class="text-2xl md:text-4xl font-bold text-white">Explore o mundo da poesia</h1>
+                    <p class="text-md md:text-lg mt-4 text-gray-200">
+                        Descubra novos talentos, leia histórias emocionantes e compartilhe sua paixão por palavras.
+                    </p>
+                    <a href="#" class="mt-6 px-4 py-2 bg-white text-purple-700 rounded hover:bg-gray-200 border border-gray-100">Explore agora!</a>
+                </div>
+                <div class="w-full h-full flex-shrink-0 flex flex-col justify-center items-center bg-purple-700 text-center px-6">
+                    <h1 class="text-2xl md:text-4xl font-bold text-white">Faça parte da nossa comunidade</h1>
+                    <p class="text-md md:text-lg mt-4 text-gray-200">
+                        Conecte-se com escritores e leitores de todo o mundo em um só lugar.
+                    </p>
+                    <a href="#" class="mt-6 px-4 py-2 bg-white text-purple-700 rounded hover:bg-gray-200 border border-gray-100">Junte-se a nós!</a>
+                </div>
             </div>
         </div>
     </div>
+</section>
 
-<div class="container">
-    <div id="leitores" class="content">
-        <h3>Para os leitores</h3>
-        <p>Lorem ipsum dolor sit amet. Et galisum illo ad Quis harum qui harum 
-            expedita vel expedita nulla ea aliquid ullam aut enim commodi. Ea 
-            repudiandae commodi sed vero nostrum ut fugit rerum in atque quisquam 
-            sit explicabo nihil aut asperiores expedita.</p>
-        <a href="#" id="comece-leitores">Comece a ler</a>
-    </div>
+    <!-- Conteúdo Abaixo -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto">
+            <h2 class="text-2xl font-bold text-gray-800 text-center">Destaques</h2>
+            <p class="text-center mt-4 text-gray-600">
+                Explore os poemas mais populares da nossa plataforma.
+            </p>
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 bg-purple-100 rounded-lg shadow-md">
+                    <h3 class="font-semibold text-lg text-purple-700">Poema Inspirador</h3>
+                    <p class="mt-2 text-gray-600">"O céu azul reflete a alma pura dos sonhadores."</p>
+                </div>
+                <div class="p-6 bg-purple-100 rounded-lg shadow-md">
+                    <h3 class="font-semibold text-lg text-purple-700">A Poesia da Vida</h3>
+                    <p class="mt-2 text-gray-600">"Cada palavra é um passo em direção à eternidade."</p>
+                </div>
+                <div class="p-6 bg-purple-100 rounded-lg shadow-md">
+                    <h3 class="font-semibold text-lg text-purple-700">Sentimentos Profundos</h3>
+                    <p class="mt-2 text-gray-600">"Os versos cantam o que os corações não conseguem dizer."</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <div id="escritores" class="content">
-        <h3>Para os escritores</h3>
-        <p>Lorem ipsum dolor sit amet. Et galisum illo ad Quis harum qui harum 
-            expedita vel expedita nulla ea aliquid ullam aut enim commodi. Ea 
-            repudiandae commodi sed vero nostrum ut fugit rerum in atque quisquam 
-            sit explicabo nihil aut asperiores expedita.</p>
-        <a href="#" id="comece-escritores">Comece a escrever</a>
-    </div>
-</div>
+    <!-- Login Section -->
+<section class="bg-purple-50 py-12">
+    <div class="container mx-auto flex justify-center items-center">
+        <div class="w-full md:w-1/2 mt-8 md:mt-0 bg-white p-8 rounded-lg shadow-lg border border-gray-300">
+            <form action="index.php" method="POST" class="space-y-6">
+                <h1 class="text-2xl font-bold text-purple-800 text-center mb-6">Cadastro</h1>
 
-<section id="section-1">
-    <div id="img-section-1">
-        <img src="../img/img_livro_section.png" alt="">
-    </div>
+                <?php if ($successMessage): ?>
+                    <p class="text-green-600 text-center mb-4"><?= $successMessage ?></p>
+                <?php endif; ?>
+                <?php if ($errorMessage): ?>
+                    <p class="text-red-600 text-center mb-4"><?= $errorMessage ?></p>
+                <?php endif; ?>
 
-    <div id="text-section-1">
-        <h4>Leia uma inspiração</h4>
-        <p>Lorem ipsum dolor sit amet. Non sunt accusamus est aperiam velit a corrupti quia 
-            non iusto dolorum ad dolorem voluptatem. Qui doloremque praesentium qui voluptatem 
-            molestiae est ratione voluptatem sed sint illum id animi rerum nam neque perferendis. </p>
+                <div>
+                    <input type="text" name="username" placeholder="Nome de usuário" 
+                        class="w-full border border-gray-300 rounded-full p-3 focus:ring-2 focus:ring-purple-600 focus:outline-none" required>
+                </div>
+                <div>
+                    <input type="text" name="name" placeholder="Nome" 
+                        class="w-full border border-gray-300 rounded-full p-3 focus:ring-2 focus:ring-purple-600 focus:outline-none" required>
+                </div>
+                <div>
+                    <input type="email" name="email" placeholder="Email" 
+                        class="w-full border border-gray-300 rounded-full p-3 focus:ring-2 focus:ring-purple-600 focus:outline-none" required>
+                </div>
+                <div>
+                    <input type="password" name="password" placeholder="Senha" 
+                        class="w-full border border-gray-300 rounded-full p-3 focus:ring-2 focus:ring-purple-600 focus:outline-none" required>
+                </div>
+                <div class="text-gray-600">
+                    <label>
+                        <input type="checkbox" name="terms" class="mr-2">
+                        Eu concordo com os <a href="#" class="text-purple-600 hover:underline">Termos & Condições</a>
+                    </label>
+                </div>
+                <button type="submit" 
+                    class="block w-full bg-purple-600 text-white py-3 px-4 rounded-full hover:bg-purple-700 focus:ring-4 focus:ring-purple-400">
+                    Cadastrar
+                </button>
+            </form>
+        </div>
     </div>
 </section>
 
-<section id="section-2">
-    <div id="text-section-1">
-        <h4>Compartilhe seus próprios poemas</h4>
-        <p>Lorem ipsum dolor sit amet. Non sunt accusamus est aperiam velit a corrupti quia non iusto dolorum
-             ad dolorem voluptatem. Qui doloremque praesentium qui voluptatem molestiae est ratione voluptatem 
-             sed sint illum id animi rerum nam neque perferendis. </p>
-    </div>
 
-    <div id="img-section-1">
-        <img src="../img/img_woman_section.png" alt="">
-    </div>
-</section>
+    <script>
+        // Lógica do carrossel
+        const carousel = document.getElementById('carousel');
+        let index = 0;
 
-<section id="login-section">
+        function showNextSlide() {
+            index = (index + 1) % 3; // Total de 3 slides
+            const offset = -index * 100; // Move o carrossel
+            carousel.style.transform = `translateX(${offset}%)`;
+        }
 
-    <div id="text-login">
-        <h3>Registre-se e descubra hoje mesmo!</h3>
-        <p>Lorem ipsum dolor sit amet. Non sunt accusamus est aperiam velit a corrupti 
-            quia non iusto dolorum ad dolorem voluptatem. Qui doloremque praesentium qui 
-            voluptatem molestiae est ratione voluptatem sed sint illum id animi rerum nam 
-            neque perferendis. </p>
-    </div>
-
-    <div class="wrapper">
-        <form action="index.php" method="POST">
-
-            <a href="#"><i class='bx bx-arrow-back'></i></a>
-            <h1>Cadastro</h1>
-
-            <?php
-                if ($successMessage) {
-                    echo "<p style='color: green; text-align: center; margin-top: 20px;'>$successMessage</p>";
-                }
-                if ($errorMessage) {
-                    echo "<p style='color: red; text-align: center; margin-top: 20px;'>$errorMessage</p>";
-                }
-            ?>
-
-            <div class="input-box">
-                <input type="text" name="username" placeholder="Nome de usuário" required>
-                <i class='bx bxs-user'></i>
-            </div>
-
-            <div class="input-box">
-                <input type="text" name="name" placeholder="Nome" required>
-                <i class='bx bx-user'></i>
-            </div>
-
-            <div class="input-box">
-                <input type="email" name="email" placeholder="Email" required>
-                <i class='bx bxs-envelope'></i>
-            </div>
-
-            <div class="input-box">
-                <input type="password" name="password" placeholder="Senha" required>
-                <i class='bx bxs-lock-alt'></i>
-            </div>
-
-            <div class="remember-forgot">
-                <label><input type="checkbox" name="terms">Eu concordo com os <a href="">Termos & Condições</a></label>
-            </div>
-
-            <button type="submit" class="btn">Cadastrar</button>
-
-            <button type="button" class="btn google-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);"><path d="M20.283 10.356h-8.327v3.451h4.792c-.446 2.193-2.313 3.453-4.792 3.453a5.27 5.27 0 0 1-5.279-5.28 5.27 5.27 0 0 1 5.279-5.279c1.259 0 2.397.447 3.29 1.178l2.6-2.599c-1.584-1.381-3.615-2.233-5.89-2.233a8.908 8.908 0 0 0-8.934 8.934 8.907 8.907 0 0 0 8.934 8.934c4.467 0 8.529-3.249 8.529-8.934 0-.528-.081-1.097-.202-1.625z"></path></svg>
-            Continuar com o Google
-            </button>
-            
-            <div class="register-link">
-                <p>Já possui uma conta? <a href="../view/login.php">Login</a></p>
-            </div>
-        </form>
-    </div>
-</section>
-
+        // Avança para o próximo slide a cada 5 segundos
+        setInterval(showNextSlide, 5000);
+    </script>
 </body>
 </html>
