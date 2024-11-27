@@ -115,5 +115,10 @@ class PoemController {
     public function countLikes($poemId) {
         return $this->likeDAO->countLikes($poemId);
     }
+
+    public function getPoemsByTag($tag) {
+        return $this->poemDAO->fetchPoemsByTag($tag);
+    }
+    
 }
 ?>
