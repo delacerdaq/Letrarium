@@ -14,6 +14,7 @@ interface IPoemDao{
     public static function search($keyword);
     public function deletePoem($poemId, $authorId);
     public static function getAllPoemsWithTagsAndProfilePictures();
+    public function fetchPoemsByTag($tag);
 }
 
 class PoemDAO implements IPoemDao{
@@ -206,6 +207,23 @@ class PoemDAO implements IPoemDao{
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function fetchPoemsByTag($tag) {
+        $query = "SELECT p.id, p.title, p.content, p.category_id, c.name AS category_name, u.username
+                  FROM poems p
+                  JOIN categories c ON p.category_id = c.id
+                  JOIN users u ON p.author_id = u.id
+                  JOIN poem_tags pt ON p.id = pt.poem_id
+                  JOIN tags t ON pt.tag_id = t.id
+                  WHERE t.name = :tag";
+    
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':tag', $tag, PDO::PARAM_STR);
+        $stmt->execute();
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 }
 
 ?>
