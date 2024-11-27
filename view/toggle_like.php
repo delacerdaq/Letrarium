@@ -1,43 +1,42 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+session_start();
+require_once '../controller/likeController.php';
 
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['error' => 'User not logged in.']);
-    exit();
-}
+header('Content-Type: application/json');  // Garante que o retorno seja JSON
 
-require_once '../config/database.php'; 
-require_once '../controller/LikeController.php';
+// Verifica se o poema e o usuário estão definidos
+if (isset($_POST['poem_id']) && isset($_SESSION['user_id'])) {
+    $poemId = $_POST['poem_id'];
+    $userId = $_SESSION['user_id'];
 
-$database = new Database();
-$db = $database->getConnection();
+    // Certifique-se de que a variável $db está corretamente configurada
+    // Exemplo de como criar uma conexão com o banco de dados (adaptar para o seu contexto)
+    // $db = new mysqli("localhost", "usuario", "senha", "banco");
 
-$likeController = new LikeController($db);
-$user_id = $_SESSION['user_id'];
+    $likeController = new LikeController($db);  // Certifique-se de usar o nome correto da classe LikeController
 
-// Verificar se estamos solicitando as curtidas existentes
-if (isset($_GET['get_likes']) && $_GET['get_likes'] === 'true') {
-    $likedPoems = $likeController->getAllLikedPoems($user_id);
-    echo json_encode(['liked_poems' => $likedPoems]);
-    exit();
-}
+    // Verifica se o usuário já curtiu o poema
+    $currentLike = $likeController->hasLiked($poemId, $userId);
 
-// Verifica se os parâmetros para curtida foram enviados
-if (isset($_POST['liked']) && isset($_POST['poem_id'])) {
-    $poem_id = $_POST['poem_id'];
-    $liked = $_POST['liked'] === 'true';
-
-    // Alterna o estado da curtida
-    if ($liked) {
-        $result = $likeController->likePoem($user_id, $poem_id);
+    // Se já curtiu, descurte, caso contrário, curte
+    if ($currentLike) {
+        $likeController->unlikePoem($userId, $poemId);  // Corrigido: $userId e $poemId
+        $liked = false;
     } else {
-        $result = $likeController->unlikePoem($user_id, $poem_id);
+        $likeController->likePoem($userId, $poemId);  // Corrigido: $userId e $poemId
+        $liked = true;
     }
 
-    echo json_encode(['status' => $result ? 'success' : 'error']);
+    // Retorna a resposta como JSON
+    echo json_encode([
+        'success' => true,
+        'liked' => $liked
+    ]);
 } else {
-    echo json_encode(['status' => 'error', 'message' => 'Parâmetros ausentes.']);
+    // Retorna erro se os parâmetros não forem encontrados
+    echo json_encode([
+        'success' => false,
+        'message' => 'Parâmetros inválidos.'
+    ]);
 }
 ?>
