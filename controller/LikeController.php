@@ -16,6 +16,10 @@ class LikeController {
         return $this->likeDAO->unlikePoem($user_id, $poem_id);
     }
 
+    public function hasLiked($poemId, $userId){
+        return $this->likeDAO->hasLiked($poemId, $userId);
+    }
+
     public function getAllLikedPoems($user_id) {
         // Supondo que isLiked retorne uma lista dos poemas curtidos
         return $this->likeDAO->getLikedPoemsByUser($user_id);
