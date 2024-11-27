@@ -110,9 +110,16 @@ class PoemDAO implements IPoemDao{
     }
 
     public static function getByCategory($categoryId) {
-        $sql = "SELECT poems.*, categories.name as category_name FROM poems
-                JOIN categories ON poems.category_id = categories.id
-                WHERE category_id = :category_id AND visibility = 'public'";
+        $sql = "SELECT poems.*, 
+                   categories.name AS category_name, 
+                   users.username, 
+                   profile.profile_picture 
+            FROM poems
+            JOIN categories ON poems.category_id = categories.id
+            JOIN users ON poems.author_id = users.id
+            LEFT JOIN profile ON users.id = profile.user_id
+            WHERE poems.category_id = :category_id 
+              AND poems.visibility = 'public'";
         $conn = (new Database())->getConnection(); 
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(':category_id', $categoryId);
