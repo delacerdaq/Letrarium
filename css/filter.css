@@ -36,56 +36,6 @@ nav {
     transition: background-color 0.3s;
 }
 
-select {
-    font-family: 'Josefin Sans', sans-serif; /* Fonte Josefin Sans */
-    font-size: 16px; /* Tamanho da fonte */
-    padding: 5px 7px; /* Padding interno para "gordura" */
-    border-radius: 8px; /* Bordas arredondadas */
-    background-color: white; /* Fundo branco */
-    color: #333; /* Cor da fonte */
-    transition: border-color 0.3s ease; /* Transição suave para o foco */
-}
-
-select:focus {
-    border-color: #574796; /* Cor da borda ao focar */
-    outline: none; /* Remover o contorno padrão */
-}
-
-/* Estilo para o button */
-button {
-    font-family: 'Josefin Sans', sans-serif; /* Fonte Josefin Sans */
-    font-size: 16px; /* Tamanho da fonte */
-    padding: 6px 20px; /* Padding para dar mais "gordura" */
-    border-radius: 8px; /* Bordas arredondadas */
-    border: 2px solid #B8AFDF;  /* Borda azul */
-    background-color: white; /* Fundo branco */
-    color: #B8AFDF;  /* Cor do texto */
-    cursor: pointer; /* Cursor de mãozinha */
-    transition: all 0.3s ease; /* Transição suave */
-}
-
-button:hover {
-    background-color: #B8AFDF;  /* Cor de fundo ao passar o mouse */
-    color: white; /* Cor do texto ao passar o mouse */
-}
-
-button:focus {
-    outline: none; /* Remover contorno padrão */
-    border-color: #B8AFDF;  /* Cor da borda ao focar */
-}
-
-@media (max-width: 768px) {
-    #search input {
-        width: 70%;
-    }
-}
-
-@media (max-width: 480px) {
-    #search input {
-        width: 90%;
-    }
-}
-
 #welcome {
     height: 5vh; 
     display: flex;
