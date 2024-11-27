@@ -23,10 +23,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
 
     // Edita o poema através do controlador
-    $message = $poemController->editPoem($poemId, $data);
+    $resultMessage = $poemController->editPoem($poemId, $data);
+
+    // Verifica se a mensagem de sucesso ou erro
+    if (strpos($resultMessage, 'sucesso') !== false) {
+        $message = "<p style='color: green;'>$resultMessage</p>"; // Mensagem de sucesso em verde
+    } else {
+        $message = "<p style='color: red;'>$resultMessage</p>"; // Mensagem de erro em vermelho
+    }
 }
 
-// Busca o poema atual e categorias para exibir no formulário usando o controlador
+// Busca o poema atual e categorias para exibir no formulário
 $poemData = $poemController->getPoemById($poemId);
 $categories = $poemController->getCategories();
 
@@ -47,9 +54,8 @@ $tags = isset($poemData['tags']) ? $poemData['tags'] : [];
         <form action="edit_poem.php?id=<?php echo htmlspecialchars($poemId); ?>" method="POST">
         <h1>Editar Poema</h1>
 
-        <?php if (!empty($message)) : ?>
-            <p><?php echo htmlspecialchars($message); ?></p>
-        <?php endif; ?>
+        <!-- Exibe a mensagem de sucesso ou erro -->
+        <?php echo $message; ?>
 
             <label for="title">Título:</label>
             <input type="text" name="title" value="<?php echo htmlspecialchars($poemData['title']); ?>" required>
