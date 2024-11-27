@@ -155,7 +155,7 @@ class PoemDAO implements IPoemDao{
     // Método para excluir um poema
     public function deletePoem($poemId, $authorId) {
         // Verifica se o poema existe e se o usuário é o autor
-        $checkSql = "SELECT id FROM " . $this->table . "WHERE id = :poem_id AND author_id = :author_id";
+        $checkSql = "SELECT id FROM " . $this->table . " WHERE id = :poem_id AND author_id = :author_id";
         $checkStmt = $this->conn->prepare($checkSql);
         $checkStmt->bindValue(':poem_id', $poemId);
         $checkStmt->bindValue(':author_id', $authorId);
@@ -170,7 +170,7 @@ class PoemDAO implements IPoemDao{
 
         try {
             // Exclui o poema (isso vai automaticamente excluir as tags associadas devido ao ON DELETE CASCADE)
-            $deleteSql = "DELETE FROM " . $this->table . "WHERE id = :poem_id";
+            $deleteSql = "DELETE FROM " . $this->table . " WHERE id = :poem_id";
             $deleteStmt = $this->conn->prepare($deleteSql);
             $deleteStmt->bindValue(':poem_id', $poemId);
             $deleteStmt->execute();
