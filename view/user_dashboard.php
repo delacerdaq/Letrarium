@@ -223,7 +223,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
             </ul>
 
             <?php else: ?>
-                <p>Nenhum poema encontrado.</p>
+                <p style="text-align: center;">Nenhum poema encontrado.</p>
             <?php endif; ?>
         </div>
     <?php endif; ?>
