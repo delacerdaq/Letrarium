@@ -1,5 +1,4 @@
 <?php
-include_once '../model/User.php';
 include_once '../config/userDAO.php';
 
 class UserController {

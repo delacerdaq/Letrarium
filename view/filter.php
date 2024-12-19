@@ -1,6 +1,5 @@
 <?php
 session_start();
-require_once '../model/Poem.php';
 require_once '../controller/PoemController.php';
 
 if (!isset($_SESSION['user_id'])) {
