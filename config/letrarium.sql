@@ -11,6 +11,7 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     terms BOOLEAN NOT NULL DEFAULT 0
 )ENGINE=InnoDB;
+ALTER TABLE users ADD COLUMN is_admin BOOLEAN NOT NULL DEFAULT 0;
 select * from users;
 
 CREATE TABLE categories (
@@ -50,6 +51,8 @@ CREATE TABLE profile (
     bio TEXT,
     FOREIGN KEY (user_id) REFERENCES users(id)
 )ENGINE=InnoDB;
+-- Alteração na tabela de perfil para armazenar os selos de vencedores
+ALTER TABLE profile ADD winner_challenges TEXT; -- Lista de desafios vencidos
 select * from profile;
 
 CREATE TABLE password_resets (
@@ -104,20 +107,42 @@ CREATE TABLE poem_comments (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE -- Chave estrangeira para usuários
 ) ENGINE=InnoDB;
 
+-- Tabela para armazenar os desafios
+CREATE TABLE challenges (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    theme VARCHAR(255) NOT NULL,
+    description TEXT,
+    month_year VARCHAR(7) NOT NULL, -- Example: "12-2024" for December 2024
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)ENGINE=InnoDB;
 
+ALTER TABLE challenges
+ADD COLUMN winner_user_id INT NULL,
+ADD CONSTRAINT fk_winner_user_id
+FOREIGN KEY (winner_user_id) REFERENCES users(id)
+ON DELETE SET NULL
+ON UPDATE CASCADE;
 
+-- Tabela para armazenar poemas enviados para os desafios
+CREATE TABLE challenge_poems (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    challenge_id INT NOT NULL,
+    user_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (challenge_id) REFERENCES challenges(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)ENGINE=InnoDB;
 
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-
+-- Tabela para votos nos poemas submetidos aos desafios
+CREATE TABLE challenge_votes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    challenge_poem_id INT NOT NULL,
+    user_id INT NOT NULL,
+    liked BOOLEAN NOT NULL DEFAULT 1,  
+    liked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_vote (challenge_poem_id, user_id),
+    FOREIGN KEY (challenge_poem_id) REFERENCES challenge_poems(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
