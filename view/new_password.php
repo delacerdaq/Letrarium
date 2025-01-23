@@ -1,12 +1,12 @@
 <?php
-require_once '../model/PasswordRecovery.php';
+require_once '../config/PasswordDAO.php';
 require_once '../config/userDAO.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = $_POST['token'];
     $newPassword = $_POST['new_password'];
 
-    $passwordRecovery = new PasswordRecovery();
+    $passwordRecovery = new PasswordDAO();
     $resetSuccess = $passwordRecovery->resetPassword($token, $newPassword);
 
     if ($resetSuccess) {
