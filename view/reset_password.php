@@ -4,19 +4,21 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require_once '../config/userDAO.php';
-require_once '../model/PasswordRecovery.php';
+require_once '../config/passwordDAO.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
 
     $userDAO = new UserDAO();
-    $passwordRecovery = new PasswordRecovery();
+    $password = new PasswordDAO();
 
     $userInfo = $userDAO->getUserByEmail($email);
 
     if ($userInfo) {
-        $token = $passwordRecovery->createToken($userInfo['id']);
+        $token = $password->createToken($userInfo['id']);
         $recoveryLink = "http://localhost/Letrarium/view/new_password.php?token=" . $token;
+
+        $result = '';
 
         $mail = new PHPMailer(true);
         try {
@@ -35,17 +37,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Conteúdo do e-mail
             $mail->isHTML(true);
-            $mail->Charset = 'UTF-8'; // Configuração explícita da codificação
+            $mail->CharSet = 'UTF-8'; // Configuração explícita da codificação
             $mail->Subject = 'Redifinir Senha';
             $mail->Body = 'Clique no link para redefinir sua senha: <a href="' . $recoveryLink . '">' . $recoveryLink . '</a>';
 
             $mail->send();
-            echo 'Um e-mail com as instruções de recuperação de senha foi enviado.';
+            $result = 'Um e-mail com as instruções de recuperação de senha foi enviado.';
         } catch (Exception $e) {
-            echo 'Erro ao enviar e-mail: ', $mail->ErrorInfo;
+            $result = 'Erro ao enviar e-mail: ' . $mail->ErrorInfo;
         }
     } else {
-        echo 'Nenhum usuário encontrado com esse e-mail.';
+        $result = 'Nenhum usuário encontrado com esse e-mail.';
     }
 }
 ?>
@@ -62,6 +64,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container">
         <form method="POST" action="">
             <h2>Recuperar | Trocar senha</h2>
+
+            <?php if ($result): ?>
+                <p><?= $result ?></p>
+            <?php endif; ?>
 
             <label for="email">Escreva seu email cadastrado para receber isntruções acerca da recuperação de sua senha:</label>
             <input type="email" name="email" id="email" placeholder="Escreva aqui seu email" required>
