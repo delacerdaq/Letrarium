@@ -9,10 +9,6 @@ if (isset($_POST['poem_id']) && isset($_SESSION['user_id'])) {
     $poemId = $_POST['poem_id'];
     $userId = $_SESSION['user_id'];
 
-    // Certifique-se de que a variável $db está corretamente configurada
-    // Exemplo de como criar uma conexão com o banco de dados (adaptar para o seu contexto)
-    // $db = new mysqli("localhost", "usuario", "senha", "banco");
-
     $likeController = new LikeController($db);  // Certifique-se de usar o nome correto da classe LikeController
 
     // Verifica se o usuário já curtiu o poema
