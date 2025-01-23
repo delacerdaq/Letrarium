@@ -1,15 +1,26 @@
 <?php
-require_once '../config/Database.php';
+require_once 'database.php';
 
-class PasswordRecovery {
+interface IPasswordDao
+{
+    public function createToken($userId);
+    public function getToken($token);
+    public function deleteToken($token);
+    public function resetPassword($token, $newPassword);
+}
+
+class PasswordDAO implements IPasswordDao
+{
     private $conn;
     private $table = 'password_resets'; // Nome da tabela
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->conn = (new Database())->getConnection();
     }
 
-    public function createToken($userId) {
+    public function createToken($userId)
+    {
         $token = bin2hex(random_bytes(16));
         $expires_at = date('Y-m-d H:i:s', strtotime('+1 hour')); // Token válido por 1 hora
 
@@ -23,7 +34,8 @@ class PasswordRecovery {
         return $token;
     }
 
-    public function getToken($token) {
+    public function getToken($token)
+    {
         $query = "SELECT * FROM " . $this->table . " WHERE token = :token AND expires_at > NOW()";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':token', $token);
@@ -31,14 +43,16 @@ class PasswordRecovery {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function deleteToken($token) {
+    public function deleteToken($token)
+    {
         $query = "DELETE FROM " . $this->table . " WHERE token = :token";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':token', $token);
         return $stmt->execute();
     }
 
-    public function resetPassword($token, $newPassword) {
+    public function resetPassword($token, $newPassword)
+    {
         $tokenData = $this->getToken($token);
 
         if ($tokenData) {
@@ -57,4 +71,3 @@ class PasswordRecovery {
         return false;
     }
 }
-?>
