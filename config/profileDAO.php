@@ -3,7 +3,7 @@ require_once 'database.php';
 require_once '../model/profile.php';
 
 interface IProfileDao{
-    public static function fetchProfileByUserId($userId);
+    public function fetchProfileByUserId($userId);
     public function updateProfile($userId, $data);
     public function updateProfilePicture($userId, $profilePicture);
     public function updateBio($userId, $bio);
@@ -16,14 +16,12 @@ class ProfileDAO implements IProfileDao{
     private $table = 'profile';
     
     public function __construct() {
-        $database = new Database();
-        $this->conn = $database->getConnection();
+        $this->conn = Database::getConnection();
     }
 
-    public static function fetchProfileByUserId($userId) {
+    public function fetchProfileByUserId($userId) {
         $sql = "SELECT * FROM profile WHERE user_id = :user_id";
-        $conn = (new Database())->getConnection(); 
-        $stmt = $conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':user_id', $userId);
         $stmt->execute();
     
@@ -35,8 +33,8 @@ class ProfileDAO implements IProfileDao{
         }
     
         return $result;
-        }
-    
+    }
+
     // Update profile
     public function updateProfile($userId, $data) {
         $sql = "UPDATE profile SET bio = :bio, profile_picture = :profile_picture WHERE user_id = :user_id";

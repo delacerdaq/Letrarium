@@ -7,13 +7,13 @@ interface IPoemDao{
     public function save(Poem $poem);
     public function editPoem($poemId, $title, $content, $categoryId, $visibility);
     public function getById($poemId);
-    public static function getAll();
-    public static function getByCategory($categoryId);
-    public static function getByUser($userId);
-    public static function getCategories();
-    public static function search($keyword);
+    public function getAll();
+    public function getByCategory($categoryId);
+    public function getByUser($userId);
+    public function getCategories();
+    public function search($keyword);
     public function deletePoem($poemId, $authorId);
-    public static function getAllPoemsWithTagsAndProfilePictures();
+    public function getAllPoemsWithTagsAndProfilePictures();
     public function fetchPoemsByTag($tag);
 }
 
@@ -24,8 +24,7 @@ class PoemDAO implements IPoemDao{
     private $table = 'poems';
     
     public function __construct() {
-        $database = new Database();
-        $this->conn = $database->getConnection();
+        $this->conn = Database::getConnection();
         $this->tagDAO = new tagDAO();
     }
 
@@ -95,21 +94,20 @@ class PoemDAO implements IPoemDao{
         }
     }
 
-    public static function getAll() {
+    public function getAll() {
         $sql = "SELECT poems.*, categories.name as category_name, users.username, profile.profile_picture
                 FROM poems
                 JOIN categories ON poems.category_id = categories.id
                 JOIN users ON poems.author_id = users.id
                 LEFT JOIN profile ON users.id = profile.user_id
                 WHERE visibility = 'public'";
-        $conn = (new Database())->getConnection(); 
-        $stmt = $conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getByCategory($categoryId) {
+    public function getByCategory($categoryId) {
         $sql = "SELECT poems.*, 
                    categories.name AS category_name, 
                    users.username, 
@@ -120,39 +118,35 @@ class PoemDAO implements IPoemDao{
             LEFT JOIN profile ON users.id = profile.user_id
             WHERE poems.category_id = :category_id 
               AND poems.visibility = 'public'";
-        $conn = (new Database())->getConnection(); 
-        $stmt = $conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':category_id', $categoryId);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getByUser($userId) {
+    public function getByUser($userId) {
         $sql = "SELECT poems.*, categories.name as category_name FROM poems
                 JOIN categories ON poems.category_id = categories.id
                 WHERE author_id = :author_id";
-        $conn = (new Database())->getConnection(); 
-        $stmt = $conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':author_id', $userId);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getCategories() {
+    public function getCategories() {
         $sql = "SELECT * FROM categories";
-        $conn = (new Database())->getConnection(); 
-        $stmt = $conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function search($keyword) {
+    public function search($keyword) {
         $sql = "SELECT * FROM poems WHERE title LIKE :keyword OR content LIKE :keyword";
-        $conn = (new Database())->getConnection(); 
-        $stmt = $conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':keyword', '%' . $keyword . '%');
         $stmt->execute();
 
@@ -192,7 +186,7 @@ class PoemDAO implements IPoemDao{
         }
     }
 
-    public static function getAllPoemsWithTagsAndProfilePictures() {
+    public function getAllPoemsWithTagsAndProfilePictures() {
         $sql = "
             SELECT poems.id, poems.title, poems.content, poems.visibility, poems.author_id, poems.category_id, 
                    categories.name AS category_name, users.username, profile.profile_picture,
@@ -207,9 +201,7 @@ class PoemDAO implements IPoemDao{
             GROUP BY poems.id
         ";
         
-        // Utiliza a conexão já estabelecida no construtor
-        $conn = (new Database())->getConnection(); 
-        $stmt = $conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -230,7 +222,5 @@ class PoemDAO implements IPoemDao{
     
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
 }
-
 ?>

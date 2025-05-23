@@ -14,8 +14,7 @@ class UserDAO implements IUserDao {
     private $table = 'users';
 
     public function __construct() {
-        $database = new Database();
-        $this->conn = $database->getConnection();
+        $this->conn = Database::getConnection();
     }
 
     public function register($username, $name, $email, $password, $terms) {

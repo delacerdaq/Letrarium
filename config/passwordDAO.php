@@ -16,7 +16,7 @@ class PasswordDAO implements IPasswordDao
 
     public function __construct()
     {
-        $this->conn = (new Database())->getConnection();
+        $this->conn = Database::getConnection();
     }
 
     public function createToken($userId)
