@@ -4,8 +4,8 @@ require_once '../model/challenge.php';
 
 interface IChallengeDao
 {
-    public static function fetchAllChallenges();
-    public static function getAllChallengesWithProfiles($challengeId);
+    public function fetchAllChallenges();
+    public function getAllChallengesWithProfiles($challengeId);
     public function createChallenge($theme, $description, $monthYear, $adminId);
     public function submitPoem($challengeId, $userId, $title, $content);
     public function votePoem($poemId, $userId);
@@ -24,15 +24,13 @@ class ChallengeDAO implements IChallengeDao
 
     public function __construct()
     {
-        $database = new Database();
-        $this->conn = $database->getConnection();
+        $this->conn = Database::getConnection();
     }
 
-    public static function fetchAllChallenges()
+    public function fetchAllChallenges()
     {
         $sql = "SELECT * FROM challenges";
-        $conn = (new Database())->getConnection();
-        $stmt = $conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -53,7 +51,7 @@ class ChallengeDAO implements IChallengeDao
         return null; // Retorna null se nenhum poema for encontrado
     }
 
-    public static function getAllChallengesWithProfiles($challengeId)
+    public function getAllChallengesWithProfiles($challengeId)
     {
         $sql = "
         SELECT u.name AS user_name,
@@ -66,8 +64,7 @@ class ChallengeDAO implements IChallengeDao
         WHERE cp.challenge_id = :challenge_id";
 
         try {
-            $conn = (new Database())->getConnection();
-            $stmt = $conn->prepare($sql);
+            $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':challenge_id', $challengeId, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);

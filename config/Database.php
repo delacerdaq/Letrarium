@@ -1,23 +1,23 @@
 <?php
 
 class Database {
-    private $host = "localhost";
-    private $db_name = "Letrarium";
-    private $username = "root";
-    private $password = "";
-    public $conn;
+    private static $host = "localhost";
+    private static $db_name = "Letrarium";
+    private static $username = "root";
+    private static $password = "";
+    private static $conn;
 
-    public function getConnection() {
-        $this->conn = null;
+    public static function getConnection() {
+        self::$conn = null;
 
         try {
-            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            self::$conn = new PDO("mysql:host=" . self::$host . ";dbname=" . self::$db_name, self::$username, self::$password);
+            self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch(PDOException $exception) {
             echo "Connection error: " . $exception->getMessage();
         }
         
-        return $this->conn;
+        return self::$conn;
     }
 }
 ?>

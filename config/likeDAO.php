@@ -15,8 +15,7 @@ class LikeDAO implements ILikeDao{
     private $db;
 
     public function __construct() {
-        $database = new Database();
-        $this->db = $database->getConnection();
+        $this->db = Database::getConnection();
     }
 
     public function likePoem($user_id, $poem_id) {

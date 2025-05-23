@@ -11,7 +11,7 @@ class ProfileController {
 
     // Get profile by user ID
     public function getProfileByUserId($userId) {
-        return $this->profileDAO::fetchProfileByUserId($userId);
+        return $this->profileDAO->fetchProfileByUserId($userId);
     }
 
     // Update entire profile (bio and picture)

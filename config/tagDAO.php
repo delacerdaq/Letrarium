@@ -14,8 +14,7 @@ class TagDao implements ITagDao{
     private $table = 'tags';
     
     public function __construct() {
-        $database = new Database();
-        $this->conn = $database->getConnection();
+        $this->conn = Database::getConnection();
     }
 
     // Método para adicionar uma tag ao poema, usando composição
