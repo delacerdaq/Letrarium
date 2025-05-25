@@ -1,3 +1,49 @@
+<?php
+session_start();
+require_once '../controller/PoemController.php';
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$poemController = new PoemController();
+$categories = $poemController->getCategories();
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $userId = $_SESSION['user_id'];
+    
+    $poem = new Poem(
+        $_POST['title'],
+        $_POST['content'],
+        $_POST['visibility'],
+        $userId,
+        $_POST['category']
+    );
+
+    $validationResult = $poemController->validatePoem($poem);
+    
+    if ($validationResult === true) {
+        $resultMessage = $poemController->savePoem(
+            $poem->getTitle(),
+            $poem->getContent(),
+            $poem->getVisibility(),
+            $poem->getAuthorId(),
+            $poem->getCategoryId(),
+            $_POST['tags']
+        );
+        
+        if ($resultMessage === "Poema salvo com sucesso.") {
+            $successMessage = "Poema publicado com sucesso!";
+        } else {
+            $errorMessage = "Erro ao publicar poema: " . $resultMessage;
+        }
+    } else {
+        $errorMessage = $validationResult;
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
