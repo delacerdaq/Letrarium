@@ -2,11 +2,15 @@
 session_start();
 require_once '../controller/PoemController.php';
 require_once '../controller/commentController.php';
+require_once '../controller/LoadingController.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../view/login.php");
     exit();
 }
+
+$loadingController = LoadingController::getInstance();
+$loadingController->startLoading();
 
 $user_id = $_SESSION['user_id'];
 $username = $_SESSION['username'];
@@ -241,6 +245,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
 
     <script src="../js/like.js"></script>
     <script src="../js/comments.js"></script>
+    <script src="../js/loading.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     </body>
 </html>

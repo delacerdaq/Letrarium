@@ -1,6 +1,10 @@
 <?php
 session_start();
 require_once '../controller/ProfileController.php';
+require_once '../controller/LoadingController.php';
+
+$loadingController = LoadingController::getInstance();
+$loadingController->startLoading();
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -69,5 +73,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   </div>
 
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="../js/loading.js"></script>
 </body>
 </html>

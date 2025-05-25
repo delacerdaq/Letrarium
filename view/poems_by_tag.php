@@ -1,11 +1,15 @@
 <?php
 session_start();
 require_once '../controller/PoemController.php';
+require_once '../controller/LoadingController.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../view/login.php");
     exit();
 }
+
+$loadingController = LoadingController::getInstance();
+$loadingController->startLoading();
 
 $poemController = new PoemController();
 $tag = isset($_GET['tag']) ? trim($_GET['tag']) : '';
@@ -72,5 +76,6 @@ $poems = $poemController->getPoemsByTag($tag);
 </div>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../js/loading.js"></script>
 </body>
 </html>

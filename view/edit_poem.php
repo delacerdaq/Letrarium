@@ -1,6 +1,10 @@
 <?php
 session_start();
 require_once '../controller/PoemController.php';
+require_once '../controller/LoadingController.php';
+
+$loadingController = LoadingController::getInstance();
+$loadingController->startLoading();
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../view/login.php");
@@ -113,5 +117,6 @@ $tags = isset($poemData['tags']) ? $poemData['tags'] : [];
     <?php endif; ?>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../js/loading.js"></script>
 </body>
 </html>

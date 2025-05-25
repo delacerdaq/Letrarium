@@ -1,5 +1,9 @@
 <?php
 require_once '../controller/UserController.php';
+require_once '../controller/LoadingController.php';
+
+$loadingController = LoadingController::getInstance();
+$loadingController->startLoading();
 
 $successMessage = '';
 $errorMessage = '';
@@ -170,5 +174,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         setInterval(showNextSlide, 5000);
     </script>
+    <script src="../js/loading.js"></script>
 </body>
 </html>

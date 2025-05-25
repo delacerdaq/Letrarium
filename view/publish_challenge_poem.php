@@ -1,5 +1,6 @@
 <?php
 require_once '../controller/ChallengeController.php';
+require_once '../controller/LoadingController.php';
 
 session_start();
 
@@ -7,6 +8,9 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: ../view/login.php");
     exit();
 }
+
+$loadingController = LoadingController::getInstance();
+$loadingController->startLoading();
 
 $challengeController = new ChallengeController();
 
@@ -81,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <script src="https://cdn.tailwindcss.com"></script>
-</body>
+    <script src="../js/loading.js"></script>
+</body> 
 
 </html>
