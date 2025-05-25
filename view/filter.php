@@ -1,6 +1,10 @@
 <?php
 session_start();
 require_once '../controller/PoemController.php';
+require_once '../controller/LoadingController.php';
+
+$loadingController = LoadingController::getInstance();
+$loadingController->startLoading();
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../view/login.php");
@@ -101,5 +105,6 @@ $categories = $poemController->getCategories();
             <p class="text-center text-gray-600 mt-10 text-lg font-medium">Nenhum poema encontrado para a categoria selecionada.</p>
         <?php endif; ?>
     </div>
+    <script src="../js/loading.js"></script>
 </body>
 </html>

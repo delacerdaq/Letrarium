@@ -1,6 +1,10 @@
 <?php
 require_once '../config/PasswordDAO.php';
 require_once '../config/userDAO.php';
+require_once '../controller/LoadingController.php';
+
+$loadingController = LoadingController::getInstance();
+$loadingController->startLoading();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = $_POST['token'];
@@ -53,6 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 </form>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="../js/loading.js"></script>
 </body>
 </html>
 

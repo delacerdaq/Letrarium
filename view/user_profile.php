@@ -2,11 +2,15 @@
 session_start();
 require_once '../controller/poemController.php';
 require_once '../controller/ProfileController.php';
+require_once '../controller/LoadingController.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
+
+$loadingController = LoadingController::getInstance();
+$loadingController->startLoading();
 
 $user_id = $_SESSION['user_id'];
 $username = $_SESSION['username'];
@@ -88,6 +92,7 @@ $poems = $poemController->getPoemsByUser($user_id);
   </div>
 
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="../js/loading.js"></script>
 </body>
 
 

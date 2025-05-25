@@ -1,5 +1,9 @@
 <?php
 require_once '../controller/ChallengeController.php';
+require_once '../controller/LoadingController.php';
+
+$loadingController = LoadingController::getInstance();
+$loadingController->startLoading(); 
 
 $challengeController = new ChallengeController();
 
@@ -82,5 +86,6 @@ $challenges = $challengeController->fetchAllChallenges();
     </div>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../js/loading.js"></script>
 </body>
 </html>

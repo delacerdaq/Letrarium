@@ -1,7 +1,11 @@
 <?php
 require_once '../config/userDAO.php';
 require_once '../controller/ProfileController.php'; 
+require_once '../controller/LoadingController.php';
 session_start();
+
+$loadingController = LoadingController::getInstance();
+$loadingController->startLoading();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
@@ -121,5 +125,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </form>
   </div>
 
+  <script src="../js/loading.js"></script>
 </body>
 </html>
