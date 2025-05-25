@@ -170,9 +170,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
           <div class="tags text-center text-sm mb-4">
             <strong>Tags: </strong>
             <?php
-            $tagsArray = explode(',', $poem['tags']);
-            foreach ($tagsArray as $tag) {
-                echo '<a href="poems_by_tag.php?tag=' . urlencode(trim($tag)) . '" class="text-purple-600 hover:underline mx-1">' . htmlspecialchars(trim($tag)) . '</a>';
+            if (!empty($poem['tags'])) {
+                $tagsArray = explode(',', $poem['tags']);
+                foreach ($tagsArray as $tag) {
+                    if (!empty(trim($tag))) {
+                        echo '<a href="poems_by_tag.php?tag=' . urlencode(trim($tag)) . '" class="text-purple-600 hover:underline mx-1">' . htmlspecialchars(trim($tag)) . '</a>';
+                    }
+                }
+            } else {
+                echo '<span class="text-gray-500">Nenhuma tag</span>';
             }
             ?>
           </div>
