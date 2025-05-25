@@ -13,10 +13,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $username = $_SESSION['username'];
 
-// Checagem de admin
 $isAdmin = $challengeController->isAdmin($user_id);
-
-// Busca de desafios do banco
 $challenges = $challengeController->fetchAllChallenges();
 
 ?>
@@ -27,48 +24,63 @@ $challenges = $challengeController->fetchAllChallenges();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Challenges</title>
-    <link rel="stylesheet" href="../css/challenge.css">
 </head>
-<body>
-    <div class="container">
-        <h1>Challenges</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Tema</th>
-                    <th>Descrição</th>
-                    <th>Mês/Ano</th>
-                    <th>Postado em</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($challenges)): ?>
-                    <?php foreach ($challenges as $challenge): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($challenge['id']) ?></td>
-                            <td><?= htmlspecialchars($challenge['theme']) ?></td>
-                            <td><?= htmlspecialchars($challenge['description']) ?></td>
-                            <td><?= htmlspecialchars($challenge['month_year']) ?></td>
-                            <td><?= htmlspecialchars($challenge['created_at']) ?></td>
-                            <td class="actions">
-                                <a href="publish_challenge_poem.php?challenge_id=<?= $challenge['id'] ?>" class="button">Submit Poem</a>
-                                <a href="view_challenge_poems.php?challenge_id=<?= $challenge['id'] ?>" class="button">View Poems</a>
-                                <?php if ($isAdmin): ?>
-                                    <a href="edit_challenge.php?challenge_id=<?= $challenge['id'] ?>" class="button">Edit</a>
-                                    <a href="delete_challenge.php?challenge_id=<?= $challenge['id'] ?>" class="button delete">Delete</a>
-                                <?php endif; ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
+<body class="bg-[#fef7ed] min-h-screen py-10 px-4">
+    <div class="max-w-7xl mx-auto bg-white p-8 rounded-2xl shadow-md">
+        <h1 class="text-3xl font-bold text-purple-700 mb-6 text-center">Desafios</h1>
+        <div class="overflow-x-auto">
+            <table class="min-w-full table-auto text-sm text-left text-gray-700">
+                <thead class="bg-purple-100 text-purple-700">
                     <tr>
-                        <td colspan="6" style="text-align: center;">Nenhum desafio encontrado.</td>
+                        <th class="px-4 py-3">ID</th>
+                        <th class="px-4 py-3">Tema</th>
+                        <th class="px-4 py-3">Descrição</th>
+                        <th class="px-4 py-3">Mês/Ano</th>
+                        <th class="px-4 py-3">Postado em</th>
+                        <th class="px-4 py-3 text-center">Ações</th>
                     </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="divide-y divide-purple-200">
+                    <?php if (!empty($challenges)): ?>
+                        <?php foreach ($challenges as $challenge): ?>
+                            <tr class="hover:bg-purple-50 transition">
+                                <td class="px-4 py-3"><?= htmlspecialchars($challenge['id']) ?></td>
+                                <td class="px-4 py-3"><?= htmlspecialchars($challenge['theme']) ?></td>
+                                <td class="px-4 py-3"><?= htmlspecialchars($challenge['description']) ?></td>
+                                <td class="px-4 py-3"><?= htmlspecialchars($challenge['month_year']) ?></td>
+                                <td class="px-4 py-3"><?= htmlspecialchars($challenge['created_at']) ?></td>
+                                <td class="px-4 py-3 flex flex-wrap gap-2 justify-center items-center">
+                                    <a href="publish_challenge_poem.php?challenge_id=<?= $challenge['id'] ?>"
+                                       class="bg-purple-600 text-white px-3 py-1 rounded-lg hover:bg-purple-700 transition text-xs">
+                                        Enviar Poema
+                                    </a>
+                                    <a href="view_challenge_poems.php?challenge_id=<?= $challenge['id'] ?>"
+                                       class="bg-amber-400 text-white px-3 py-1 rounded-lg hover:bg-amber-500 transition text-xs">
+                                        Ver Poemas
+                                    </a>
+                                    <?php if ($isAdmin): ?>
+                                        <a href="edit_challenge.php?challenge_id=<?= $challenge['id'] ?>"
+                                           class="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 transition text-xs">
+                                            Editar
+                                        </a>
+                                        <a href="delete_challenge.php?challenge_id=<?= $challenge['id'] ?>"
+                                           class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition text-xs">
+                                            Deletar
+                                        </a>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="6" class="px-4 py-6 text-center text-gray-500">Nenhum desafio encontrado.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
+
+    <script src="https://cdn.tailwindcss.com"></script>
 </body>
 </html>

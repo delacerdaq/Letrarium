@@ -24,13 +24,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nova senha</title>
 </head>
-<body>
-    <form method="POST" action="">
+<body class="bg-[#fffbea] min-h-screen flex items-center justify-center font-sans text-gray-800">
+
+<form method="POST" action="" class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
     <input type="hidden" name="token" value="<?php echo $_GET['token']; ?>">
-    <label for="new_password">Nova Senha:</label>
-    <input type="password" name="new_password" id="new_password" required>
-    <button type="submit">Redefinir Senha</button>
+
+    <h1 class="text-2xl font-bold text-purple-800 mb-6 text-center">Redefinir Senha</h1>
+
+    <label for="new_password" class="block text-sm font-medium text-gray-700 mb-2">Nova Senha:</label>
+    <input 
+        type="password" 
+        name="new_password" 
+        id="new_password" 
+        required 
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 mb-6"
+    >
+
+    <button 
+        type="submit" 
+        class="w-full bg-purple-700 hover:bg-purple-800 text-white font-semibold py-2 px-4 rounded-lg transition shadow-md">
+        Redefinir Senha
+    </button>
+
+    <a href="login.php" 
+        class="w-full mt-4 bg-purple-200 hover:bg-purple-300 text-purple-800 font-semibold py-2 px-4 rounded-lg transition shadow-md text-center block">
+        Voltar ao login
+    </a>
+
 </form>
+<script src="https://cdn.tailwindcss.com"></script>
 </body>
 </html>
 

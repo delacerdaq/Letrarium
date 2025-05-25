@@ -11,16 +11,12 @@ $user_id = $_SESSION['user_id'];
 $profileController = new ProfileController();
 $profile = $profileController->getProfileByUserId($user_id);
 
-// Verifica se a bio está definida
 $bio = isset($profile['bio']) ? $profile['bio'] : '';
-
-// Verifica se a foto de perfil está definida
 $profilePicture = !empty($profile['profile_picture']) ? $profile['profile_picture'] : null;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $newBio = $_POST['bio'] ?? '';
 
-    // Processo de upload da nova foto de perfil, se houver
     if (!empty($_FILES['profile_picture']['name'])) {
         $uploadResult = $profileController->uploadPhoto($user_id, $_FILES['profile_picture']);
         if ($uploadResult !== true) {
@@ -28,9 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // Atualização da bio
     if ($profileController->updateBio($user_id, $newBio)) {
-        // Redirecionar para o perfil atualizado
         header("Location: user_profile.php");
         exit();
     } else {
@@ -40,31 +34,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Perfil</title>
-    <link rel="stylesheet" href="../css/edit_profile.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Editar Perfil</title>
 </head>
-<body>
+<body class="bg-[#fef9f2] text-gray-800 min-h-screen flex items-center justify-center p-6">
 
-<div id="edit-profile">
-<h1>Editar Perfil</h1>
-    <form action="edit_profile.php" method="post" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="profile_picture">Foto de Perfil:</label>
-            <input type="file" name="profile_picture" id="profile_picture">
-        </div>
-        <div class="form-group">
-            <label for="bio">Bio:</label>
-            <textarea name="bio" id="bio" rows="4"><?php echo htmlspecialchars($bio); ?></textarea>
-        </div>
-        <button type="submit">Salvar Alterações</button>
+  <div class="w-full max-w-xl bg-white rounded-2xl shadow-lg p-8 space-y-6 border border-gray-200">
 
-        <a href="user_dashboard.php">Voltar ao Dashboard</a>
+    <h1 class="text-2xl font-bold text-purple-700 text-center">Editar Perfil</h1>
+
+    <form action="edit_profile.php" method="post" enctype="multipart/form-data" class="space-y-6">
+
+      <div>
+        <label for="profile_picture" class="block text-sm font-medium text-gray-700 mb-1">Foto de Perfil:</label>
+        <input type="file" name="profile_picture" id="profile_picture" class="w-full rounded border border-gray-300 p-2 file:bg-purple-500 file:text-white file:rounded file:px-4 file:py-2 file:cursor-pointer"/>
+      </div>
+
+      <div>
+        <label for="bio" class="block text-sm font-medium text-gray-700 mb-1">Bio:</label>
+        <textarea name="bio" id="bio" rows="4" class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500"><?php echo htmlspecialchars($bio); ?></textarea>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <a href="user_dashboard.php" class="text-purple-600 hover:underline text-sm">← Voltar ao Dashboard</a>
+        <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition shadow">
+          Salvar Alterações
+        </button>
+      </div>
+
     </form>
-</div>
+  </div>
 
+  <script src="https://cdn.tailwindcss.com"></script>
 </body>
 </html>

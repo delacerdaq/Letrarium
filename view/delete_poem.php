@@ -19,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Erro ao excluir o poema.";
     }
 } else {
-    // Carrega o poema para confirmação de exclusão
     $poemId = $_GET['id'];
     $poem = $poemController->getPoemById($poemId);
 
@@ -35,24 +34,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Excluir Poema</title>
-    <link rel="stylesheet" href="../css/delete_poem.css">
     <script src="../js/poem.js" defer></script>
 </head>
-<body>
+<body class="bg-[#fffbea] min-h-screen flex items-center justify-center py-10 px-4 sm:px-6">
+<script src="https://cdn.tailwindcss.com"></script>
 
-<div class="container">
-    <form id="delete-form" method="post" action="">
-    <h1>Excluir Poema</h1>
-    
+<div class="w-full max-w-xl bg-white rounded-2xl shadow-lg p-8">
+    <form id="delete-form" method="post" action="" class="space-y-6">
+        <h1 class="text-3xl font-bold text-purple-700 text-center">Excluir Poema</h1>
+
         <input type="hidden" name="id" value="<?php echo htmlspecialchars($poemId); ?>">
-        <p>Você tem certeza de que deseja excluir o poema "<strong><?php echo htmlspecialchars($poem['title']); ?></strong>"?</p>
-        <button type="submit">Excluir</button>
-        <a href="user_profile.php">Cancelar</a>
+
+        <p class="text-gray-700 text-lg text-center">
+            Você tem certeza de que deseja excluir o poema
+            <strong class="text-purple-800">"<?php echo htmlspecialchars($poem['title']); ?>"</strong>?
+        </p>
+
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4">
+            <button type="submit"
+                    class="bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-red-700 transition">
+                Excluir
+            </button>
+
+            <a href="user_profile.php"
+               class="text-purple-700 font-medium underline hover:text-purple-900 transition">
+                Cancelar
+            </a>
+        </div>
     </form>
+
     <?php if (isset($error)): ?>
-        <p><?php echo htmlspecialchars($error); ?></p>
+        <p class="mt-4 text-red-600 text-center"><?php echo htmlspecialchars($error); ?></p>
     <?php endif; ?>
 </div>
 
+<script src="https://cdn.tailwindcss.com"></script>
 </body>
 </html>

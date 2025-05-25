@@ -19,7 +19,6 @@ if (!$challenge_id || !is_numeric($challenge_id)) {
     die("challenge_id não está definido ou é inválido.");
 }
 
-// Processamento do formulário
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userId = $_SESSION['user_id'];
     $title = $_POST['title'] ?? '';
@@ -27,11 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $result = $challengeController->submitPoem($challenge_id, $userId, $title, $content);
 
-    // Avaliar o resultado retornado pelo método submitPoem
     if ($result === "Poema submetido com sucesso.") {
-        $successMessage = $result; // Mensagem de sucesso
+        $successMessage = $result;
     } else {
-        $errorMessage = $result; // Mensagem de erro específica
+        $errorMessage = $result;
     }
 }
 ?>
@@ -42,33 +40,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Publicar Poema</title>
-    <link rel="stylesheet" href="../css/publish_challenge_poem.css">
 </head>
-<body>
-    <div class="form-container">
-        <form action="publish_challenge_poem.php" method="post">
-            <h1>Publicar Poema</h1>
+<body class="bg-[#fef7ed] min-h-screen flex items-center justify-center py-10 px-4">
+    <div class="w-full max-w-2xl bg-white p-8 rounded-2xl shadow-lg">
+        <form action="publish_challenge_poem.php" method="post" class="space-y-6">
+            <h1 class="text-3xl font-bold text-purple-700 text-center">Publicar Poema</h1>
 
             <?php if ($successMessage): ?>
-                    <p style="text-align: center; color: green;"><?= $successMessage ?></p>
-                <?php endif; ?>
-                <?php if ($errorMessage): ?>
-                    <p style="text-align: center; color: red;"><?= $errorMessage ?></p>
-                <?php endif; ?>
+                <p class="text-green-600 text-center font-semibold"><?= $successMessage ?></p>
+            <?php endif; ?>
+            <?php if ($errorMessage): ?>
+                <p class="text-red-600 text-center font-semibold"><?= $errorMessage ?></p>
+            <?php endif; ?>
 
-            <input type="hidden" name="challenge_id" value="<?= htmlspecialchars($challenge_id) ?>"> 
+            <input type="hidden" name="challenge_id" value="<?= htmlspecialchars($challenge_id) ?>">
 
-            <label for="title">Título</label>
-            <input type="text" id="title" name="title" placeholder="Digite o título do poema" required>
+            <div>
+                <label for="title" class="block text-sm font-medium text-purple-700">Título</label>
+                <input type="text" id="title" name="title" placeholder="Digite o título do poema" required
+                    class="mt-1 w-full px-4 py-2 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none shadow-sm">
+            </div>
 
-            <label for="content">Conteúdo</label>
-            <textarea id="content" name="content" placeholder="Escreva o poema aqui" rows="8" required></textarea>
+            <div>
+                <label for="content" class="block text-sm font-medium text-purple-700">Conteúdo</label>
+                <textarea id="content" name="content" rows="8" placeholder="Escreva o poema aqui" required
+                    class="mt-1 w-full px-4 py-2 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none shadow-sm resize-y"></textarea>
+            </div>
 
-            <div class="button-group">
-                <button type="button" class="back-button" onclick="history.back()">Voltar</button>
-                <button type="submit" class="publish-button">Publicar</button>
+            <div class="flex justify-between">
+                <button type="button" onclick="history.back()"
+                    class="px-6 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition font-semibold">
+                    Voltar
+                </button>
+                <button type="submit"
+                    class="px-6 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition font-semibold shadow-md">
+                    Publicar
+                </button>
             </div>
         </form>
     </div>
+
+    <script src="https://cdn.tailwindcss.com"></script>
 </body>
+
 </html>
