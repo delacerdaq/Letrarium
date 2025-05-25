@@ -1,96 +1,98 @@
-<?php
-session_start();
-require_once '../controller/poemController.php';
-
-// Verifica se o usuário está logado
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../view/login.php");
-    exit();
-}
-
-$poemController = new PoemController();
-// Recupera categorias do banco de dados
-$categories = $poemController->getCategories();
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $title = $_POST['title'];
-    $content = $_POST['content'];
-    $visibility = $_POST['visibility'];
-    $categoryId = $_POST['category'];
-    $authorId = $_SESSION['user_id'];
-    $tags = $_POST['tags']; // Novo campo para as tags
-
-    // Chama o método savePoem com todos os parâmetros necessários
-    $resultMessage = $poemController->savePoem($title, $content, $visibility, $authorId, $categoryId, $tags);
-
-    // Exibe a mensagem de sucesso ou erro
-    if (strpos($resultMessage, 'sucesso') !== false) {
-        $successMessage = $resultMessage;
-    } else {
-        $errorMessage = $resultMessage;
-    }
-}
-?>
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Publicar Poema</title>
-    <link rel="stylesheet" href="../css/publish_poem.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Publicar Poema</title>
 </head>
-<body>
-    <div class="container">
-        <h1>Publicar Poema</h1>
+<body class="bg-[#fef9f2] min-h-screen flex items-center justify-center px-4">
+  <div class="w-full mt-10 mb-10 max-w-lg bg-white p-8 rounded-lg shadow-lg text-gray-800 border border-gray-200">
+    <h1 class="text-3xl font-bold mb-6 text-center text-purple-700">Publicar Poema</h1>
 
-        <?php
-        if (isset($successMessage)) {
-            echo "<p style='color: green;'>$successMessage</p>";
-        } elseif (isset($errorMessage)) {
-            echo "<p style='color: red;'>$errorMessage</p>";
-        }
-        ?>
+    <?php
+    if (isset($successMessage)) {
+        echo "<p class='text-green-600 mb-4 text-center'>$successMessage</p>";
+    } elseif (isset($errorMessage)) {
+        echo "<p class='text-red-500 mb-4 text-center'>$errorMessage</p>";
+    }
+    ?>
 
-        <form action="publish_poem.php" method="POST">
-            <div class="form-group">
-                <label for="title">Título:</label>
-                <input type="text" id="title" name="title" required>
-            </div>
+    <form action="publish_poem.php" method="POST" class="space-y-5">
+      <div>
+        <label for="title" class="block mb-1 font-semibold">Título:</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          required
+          class="w-full rounded-md border border-gray-300 bg-white text-gray-800 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
+      </div>
 
-            <div class="form-group">
-                <label for="content">Conteúdo do Poema:</label>
-                <textarea id="content" name="content" rows="10" required></textarea>
-            </div>
+      <div>
+        <label for="content" class="block mb-1 font-semibold">Conteúdo do Poema:</label>
+        <textarea
+          id="content"
+          name="content"
+          rows="10"
+          required
+          class="w-full rounded-md border border-gray-300 bg-white text-gray-800 px-3 py-2 resize-y focus:outline-none focus:ring-2 focus:ring-purple-500"
+        ></textarea>
+      </div>
 
-            <div class="form-group">
-                <label for="visibility">Visibilidade:</label>
-                <select id="visibility" name="visibility" required>
-                    <option value="public">Público</option>
-                    <option value="restricted">Restrito</option>
-                </select>
-            </div>
+      <div>
+        <label for="visibility" class="block mb-1 font-semibold">Visibilidade:</label>
+        <select
+          id="visibility"
+          name="visibility"
+          required
+          class="w-full rounded-md border border-gray-300 bg-white text-gray-800 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+        >
+          <option value="public">Público</option>
+          <option value="restricted">Restrito</option>
+        </select>
+      </div>
 
-            <div class="form-group">
-                <label for="category">Categoria:</label>
-                <select id="category" name="category" required>
-                    <?php foreach ($categories as $category): ?>
-                        <option value="<?php echo htmlspecialchars($category['id']); ?>">
-                            <?php echo htmlspecialchars($category['name']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
+      <div>
+        <label for="category" class="block mb-1 font-semibold">Categoria:</label>
+        <select
+          id="category"
+          name="category"
+          required
+          class="w-full rounded-md border border-gray-300 bg-white text-gray-800 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+        >
+          <?php foreach ($categories as $category): ?>
+            <option value="<?php echo htmlspecialchars($category['id']); ?>">
+              <?php echo htmlspecialchars($category['name']); ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
 
-            <div class="form-group">
-                <label for="tags">Tags (separadas por vírgula):</label>
-                <input type="text" id="tags" name="tags">
-            </div>
+      <div>
+        <label for="tags" class="block mb-1 font-semibold">Tags (separadas por vírgula):</label>
+        <input
+          type="text"
+          id="tags"
+          name="tags"
+          class="w-full rounded-md border border-gray-300 bg-white text-gray-800 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
+      </div>
 
-            <button type="submit" class="btn">Publicar</button>
-        </form>
+      <button
+        type="submit"
+        class="w-full bg-purple-600 hover:bg-purple-700 transition-colors py-3 rounded-md font-semibold text-white">
+        Publicar
+      </button>
+    </form>
 
-        <a href="user_dashboard.php">Voltar ao Dashboard</a>
+    <div class="mt-6 text-center">
+      <a href="user_dashboard.php" class="text-purple-600 hover:underline font-medium">
+        Voltar ao Dashboard
+      </a>
     </div>
+  </div>
+
+  <script src="https://cdn.tailwindcss.com"></script>
 </body>
 </html>

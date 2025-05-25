@@ -44,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body class="bg-gray-50 text-gray-800">
 
-    <!-- Header -->
     <header class="bg-purple-700 text-white p-4">
         <nav class="flex justify-between items-center container mx-auto">
             <div class="flex items-center space-x-2">
@@ -61,11 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </nav>
     </header>
 
-    <!-- Intro Section -->
 <section class="bg-purple-700 py-12">
     <div class="container mx-auto">
         <div class="carousel-container w-full h-64 md:h-96 overflow-hidden rounded-lg">
-            <!-- Carousel -->
             <div id="carousel" class="carousel w-full h-full">
                 <div class="w-full h-full flex-shrink-0 flex flex-col justify-center items-center bg-purple-700 text-center px-6">
                     <h1 class="text-2xl md:text-4xl font-bold text-white">Nós somos apaixonados por escrita</h1>
@@ -93,7 +90,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 </section>
 
-    <!-- Conteúdo Abaixo -->
     <section class="py-12 bg-white">
         <div class="container mx-auto">
             <h2 class="text-2xl font-bold text-gray-800 text-center">Destaques</h2>
@@ -117,7 +113,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </section>
 
-    <!-- Login Section -->
 <section class="bg-purple-50 py-12">
     <div class="container mx-auto flex justify-center items-center">
         <div class="w-full md:w-1/2 mt-8 md:mt-0 bg-white p-8 rounded-lg shadow-lg border border-gray-300">
@@ -149,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 <div class="text-gray-600">
                     <label>
-                        <input type="checkbox" name="terms" class="mr-2">
+                        <input required type="checkbox" name="terms" class="mr-2">
                         Eu concordo com os <a href="#" class="text-purple-600 hover:underline">Termos & Condições</a>
                     </label>
                 </div>
@@ -164,17 +159,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
     <script>
-        // Lógica do carrossel
         const carousel = document.getElementById('carousel');
         let index = 0;
 
         function showNextSlide() {
-            index = (index + 1) % 3; // Total de 3 slides
-            const offset = -index * 100; // Move o carrossel
+            index = (index + 1) % 3;
+            const offset = -index * 100;
             carousel.style.transform = `translateX(${offset}%)`;
         }
 
-        // Avança para o próximo slide a cada 5 segundos
         setInterval(showNextSlide, 5000);
     </script>
 </body>

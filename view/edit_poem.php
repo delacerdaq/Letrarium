@@ -9,8 +9,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $poemController = new PoemController();
 $message = '';
-
-// Obtém o ID do poema a ser editado via GET
 $poemId = isset($_GET['id']) ? $_GET['id'] : null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -22,22 +20,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'tags' => isset($_POST['tags']) ? explode(',', $_POST['tags']) : []
     ];
 
-    // Edita o poema através do controlador
     $resultMessage = $poemController->editPoem($poemId, $data);
 
-    // Verifica se a mensagem de sucesso ou erro
     if (strpos($resultMessage, 'sucesso') !== false) {
-        $message = "<p style='color: green;'>$resultMessage</p>"; // Mensagem de sucesso em verde
+        $message = "<p style='color: green;'>$resultMessage</p>";
     } else {
-        $message = "<p style='color: red;'>$resultMessage</p>"; // Mensagem de erro em vermelho
+        $message = "<p style='color: red;'>$resultMessage</p>";
     }
 }
-
-// Busca o poema atual e categorias para exibir no formulário
 $poemData = $poemController->getPoemById($poemId);
 $categories = $poemController->getCategories();
 
-// Garante que $poemData['tags'] seja um array
 $tags = isset($poemData['tags']) ? $poemData['tags'] : [];
 ?>
 
@@ -46,52 +39,79 @@ $tags = isset($poemData['tags']) ? $poemData['tags'] : [];
 <head>
     <meta charset="UTF-8">
     <title>Editar Poema</title>
-    <link rel="stylesheet" href="../css/edit_poem.css">
 </head>
-<body>
+<body class="bg-[#fffbea] min-h-screen py-10 px-4 sm:px-6">
 
     <?php if ($poemData) : ?>
-        <form action="edit_poem.php?id=<?php echo htmlspecialchars($poemId); ?>" method="POST">
-        <h1>Editar Poema</h1>
+        <form action="edit_poem.php?id=<?php echo htmlspecialchars($poemId); ?>" method="POST"
+              class="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg p-8 space-y-6">
 
-        <!-- Exibe a mensagem de sucesso ou erro -->
-        <?php echo $message; ?>
+            <h1 class="text-3xl font-bold text-purple-700 text-center mb-6">Editar Poema</h1>
 
-            <label for="title">Título:</label>
-            <input type="text" name="title" value="<?php echo htmlspecialchars($poemData['title']); ?>" required>
-            <br>
+            <?php if (!empty($message)): ?>
+                <div class="bg-purple-100 border border-purple-300 text-purple-800 px-4 py-2 rounded">
+                    <?php echo $message; ?>
+                </div>
+            <?php endif; ?>
 
-            <label for="content">Conteúdo:</label>
-            <textarea name="content" required><?php echo htmlspecialchars($poemData['content']); ?></textarea>
-            <br>
+            <div>
+                <label for="title" class="block text-purple-800 font-medium mb-1">Título:</label>
+                <input type="text" name="title" value="<?php echo htmlspecialchars($poemData['title']); ?>" required
+                       class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400">
+            </div>
 
-            <label for="category_id">Categoria:</label>
-            <select name="category_id" required>
-                <?php foreach ($categories as $category) : ?>
-                    <option value="<?php echo htmlspecialchars($category['id']); ?>" <?php echo ($poemData['category_id'] == $category['id']) ? 'selected' : ''; ?>>
-                        <?php echo htmlspecialchars($category['name']); ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <br>
+            <div>
+                <label for="content" class="block text-purple-800 font-medium mb-1">Conteúdo:</label>
+                <textarea name="content" required rows="6"
+                          class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400"><?php echo htmlspecialchars($poemData['content']); ?></textarea>
+            </div>
 
-            <label for="visibility">Visibilidade:</label>
-            <select name="visibility" required>
-                <option value="public" <?php echo ($poemData['visibility'] == 'public') ? 'selected' : ''; ?>>Público</option>
-                <option value="restricted" <?php echo ($poemData['visibility'] == 'restricted') ? 'selected' : ''; ?>>Restrito</option>
-            </select>
-            <br>
+            <div>
+                <label for="category_id" class="block text-purple-800 font-medium mb-1">Categoria:</label>
+                <select name="category_id" required
+                        class="w-full px-4 py-2 rounded border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-purple-400">
+                    <?php foreach ($categories as $category) : ?>
+                        <option value="<?php echo htmlspecialchars($category['id']); ?>"
+                            <?php echo ($poemData['category_id'] == $category['id']) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($category['name']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
-            <label for="tags">Tags:</label>
-            <input type="text" id="tags" name="tags" value="<?php echo htmlspecialchars(implode(', ', $poemData['tags'])); ?>">
-            <br>
+            <div>
+                <label for="visibility" class="block text-purple-800 font-medium mb-1">Visibilidade:</label>
+                <select name="visibility" required
+                        class="w-full px-4 py-2 rounded border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-purple-400">
+                    <option value="public" <?php echo ($poemData['visibility'] == 'public') ? 'selected' : ''; ?>>Público</option>
+                    <option value="restricted" <?php echo ($poemData['visibility'] == 'restricted') ? 'selected' : ''; ?>>Restrito</option>
+                </select>
+            </div>
 
-            <button type="submit">Salvar</button>
+            <div>
+                <label for="tags" class="block text-purple-800 font-medium mb-1">Tags:</label>
+                <input type="text" id="tags" name="tags" value="<?php echo htmlspecialchars(implode(', ', $poemData['tags'])); ?>"
+                       class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400">
+            </div>
 
-            <a href="user_dashboard.php">Voltar ao Dashboard</a>
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4">
+                <button type="submit"
+                        class="bg-purple-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-purple-700 transition">
+                    Salvar
+                </button>
+
+                <a href="user_dashboard.php"
+                   class="text-purple-700 font-medium underline hover:text-purple-900 transition">
+                    Voltar ao Dashboard
+                </a>
+            </div>
         </form>
     <?php else : ?>
-        <p>Poema não encontrado.</p>
+        <div class="text-center text-gray-600 text-lg mt-10">
+            <p>Poema não encontrado.</p>
+        </div>
     <?php endif; ?>
+
+    <script src="https://cdn.tailwindcss.com"></script>
 </body>
 </html>
