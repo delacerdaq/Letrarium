@@ -34,7 +34,7 @@ $poems = $poemController->getPoemsByUser($user_id);
 
     <div id="profile-top" class="flex flex-col items-center space-y-4">
       <div id="profile-picture" class="relative">
-        <?php if ($profilePicture): ?>
+      <?php if ($profilePicture && file_exists($profilePicture)): ?>
           <img src="<?php echo htmlspecialchars($profilePicture); ?>" alt="Profile Picture" class="w-32 h-32 rounded-full object-cover border-4 border-purple-500 shadow-md">
         <?php else: ?>
           <div class="w-32 h-32 flex items-center justify-center rounded-full bg-gray-200 border-4 border-purple-500 shadow-md">
